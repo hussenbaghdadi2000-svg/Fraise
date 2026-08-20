@@ -1,0 +1,13 @@
+# Source material, not runtime assets.
+#
+# imgdata/ is 49 MB of masters — the showreel, the gallery originals,
+# the raw exports that public/media/ was cropped FROM. It belongs in
+# git (it is the archive) but nothing on the deployed site reads it,
+# and shipping it makes every deploy upload 49 MB for nothing.
+imgdata
+
+# Screenshots from the verification scripts.
+shots
+
+# The agent skill and its CDP scripts. Development tooling.
+.claude
