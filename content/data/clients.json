@@ -1,0 +1,112 @@
+[
+  {
+    "id": "almarai",
+    "name": "Almarai",
+    "logo": "/media/logos/Almarai.png"
+  },
+  {
+    "id": "talabat",
+    "name": "Talabat",
+    "logo": "/media/logos/Talabat.png"
+  },
+  {
+    "id": "nabil",
+    "name": "Nabil",
+    "logo": "/media/logos/nabil-logo.webp"
+  },
+  {
+    "id": "sunwhite",
+    "name": "Sunwhite",
+    "logo": "/media/logos/sunwhite-logo.webp"
+  },
+  {
+    "id": "mezete",
+    "name": "Mezete",
+    "logo": "/media/logos/Mezete.png"
+  },
+  {
+    "id": "zalatimo",
+    "name": "Zalatimo",
+    "logo": "/media/logos/Zalatimo.jpg"
+  },
+  {
+    "id": "four-seasons",
+    "name": "Four Seasons",
+    "logo": "/media/logos/Four-Seasones.png"
+  },
+  {
+    "id": "chef-deema",
+    "name": "Chef Deema",
+    "logo": "/media/logos/Chef-Deema.png"
+  },
+  {
+    "id": "thuraya",
+    "name": "Thuraya",
+    "logo": "/media/logos/Thuraya-.png"
+  },
+  {
+    "id": "oak-tree",
+    "name": "Oak Tree",
+    "logo": "/media/logos/Oak-Tree.png"
+  },
+  {
+    "id": "qabalan",
+    "name": "Qabalan",
+    "logo": "/media/logos/Qabalan.png"
+  },
+  {
+    "id": "kasih",
+    "name": "Kasih",
+    "logo": "/media/logos/Kasih.png"
+  },
+  {
+    "id": "knorr",
+    "name": "Knorr",
+    "logo": ""
+  },
+  {
+    "id": "durra",
+    "name": "Durra",
+    "logo": ""
+  },
+  {
+    "id": "al-sayad",
+    "name": "Al Sayad",
+    "logo": ""
+  },
+  {
+    "id": "baker",
+    "name": "Baker",
+    "logo": ""
+  },
+  {
+    "id": "alwatanyeh",
+    "name": "AlWatanyeh",
+    "logo": ""
+  },
+  {
+    "id": "altahooneh",
+    "name": "Altahooneh",
+    "logo": ""
+  },
+  {
+    "id": "jordina",
+    "name": "Jordina",
+    "logo": ""
+  },
+  {
+    "id": "josweet",
+    "name": "JoSweet",
+    "logo": ""
+  },
+  {
+    "id": "skyworth",
+    "name": "Skyworth",
+    "logo": ""
+  },
+  {
+    "id": "tohfa",
+    "name": "Tohfa",
+    "logo": ""
+  }
+]

@@ -1,0 +1,1366 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fraise Studio — Pre-Development Analysis</title>
+
+<style>
+/* ============================================================
+   BLACK ROOM, WARM PLATE
+   The document renders in the system it proposes: achromatic
+   ground, warm bone type, mono slate metadata, hairline rules,
+   zero radius on frames, one accent reserved for state.
+   Deliberately single-theme — the black room IS the thesis.
+   ============================================================ */
+
+:root{
+  --ink:        #0B0B0C;
+  --ink-2:      #131315;
+  --ink-3:      #1C1B1D;
+  --bone:       #F2EFE9;
+  --bone-dim:   #A8A49C;
+  --bone-faint: #6E6A64;
+  --hairline:   rgba(242,239,233,0.13);
+  --hairline-2: rgba(242,239,233,0.22);
+  --fraise:     #C8402F;
+
+  --sans: ui-sans-serif, -apple-system, "Segoe UI Variable Display", "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "Cascadia Code", "SF Mono", "Menlo", "Consolas", monospace;
+  --arab: "Segoe UI", "Geeza Pro", "Noto Naskh Arabic", Tahoma, sans-serif;
+
+  --measure: 68ch;
+  --gutter: clamp(20px, 5vw, 56px);
+}
+
+*{ box-sizing:border-box; }
+
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+
+body{
+  margin:0;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--sans);
+  font-size: 16.5px;
+  line-height: 1.62;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+}
+
+/* ---------- shell ---------- */
+
+.shell{
+  display:grid;
+  grid-template-columns: 1fr;
+  max-width: 1500px;
+  margin-inline:auto;
+}
+
+@media (min-width: 1180px){
+  .shell{ grid-template-columns: 190px minmax(0,1fr); column-gap: clamp(32px,4vw,72px); }
+}
+
+/* ---------- index rail ---------- */
+
+.rail{ display:none; }
+
+@media (min-width: 1180px){
+  .rail{
+    display:block;
+    position:sticky;
+    top:0;
+    align-self:start;
+    max-height:100vh;
+    overflow-y:auto;
+    padding: 84px 0 64px var(--gutter);
+    scrollbar-width:thin;
+    scrollbar-color: var(--hairline-2) transparent;
+  }
+  .rail ol{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px; }
+  .rail a{
+    display:grid;
+    grid-template-columns: 18px 1fr;
+    gap:10px;
+    padding:5px 0;
+    font-family: var(--mono);
+    font-size:10.5px;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color: var(--bone-faint);
+    text-decoration:none;
+    transition: color .3s cubic-bezier(.16,1,.3,1);
+  }
+  .rail a span{ color: var(--hairline-2); }
+  .rail a:hover, .rail a:focus-visible{ color: var(--bone); }
+  .rail a:hover span, .rail a:focus-visible span{ color: var(--fraise); }
+  .rail-title{
+    font-family: var(--mono); font-size:10.5px; letter-spacing:.14em;
+    text-transform:uppercase; color: var(--bone-faint);
+    padding-bottom:14px; margin-bottom:14px; border-bottom:1px solid var(--hairline);
+  }
+}
+
+/* ---------- main ---------- */
+
+main{
+  padding-inline: var(--gutter);
+  padding-block: 0 clamp(80px,12vw,160px);
+  min-width:0;
+}
+
+.col{ max-width: var(--measure); }
+
+/* ---------- hero: the title sits in a 2.39:1 anamorphic frame ---------- */
+
+.hero{
+  padding-block: clamp(64px,9vw,110px) clamp(40px,6vw,72px);
+  display:flex; flex-direction:column; gap:26px;
+}
+
+.frame-hero{
+  border:1px solid var(--hairline-2);
+  background: var(--ink-2);
+  aspect-ratio: 2.39 / 1;
+  min-height: 220px;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding: clamp(20px,3.2vw,40px);
+  position:relative;
+  animation: rise .9s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes rise{ from{ opacity:0; transform:translateY(14px);} to{ opacity:1; transform:none; } }
+
+.frame-hero::before{
+  content:"2.39 : 1";
+  position:absolute; top: clamp(20px,3.2vw,40px); inset-inline-start: clamp(20px,3.2vw,40px);
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; color: var(--bone-faint);
+}
+.frame-hero::after{
+  content:"";
+  position:absolute; top: clamp(22px,3.2vw,42px); inset-inline-end: clamp(20px,3.2vw,40px);
+  width:7px; height:7px; background: var(--fraise); border-radius:50%;
+}
+
+h1{
+  font-size: clamp(2.1rem, 5.4vw, 4rem);
+  line-height:1.02;
+  letter-spacing:-0.035em;
+  font-weight:650;
+  margin:0;
+  text-wrap:balance;
+  max-width:15ch;
+}
+h1 em{ font-style:normal; color: var(--bone-dim); }
+
+.hero-meta{
+  display:flex; flex-wrap:wrap; gap: 8px 28px;
+  font-family:var(--mono); font-size:11px; letter-spacing:.13em;
+  text-transform:uppercase; color: var(--bone-dim);
+}
+.hero-meta b{ font-weight:400; color: var(--bone-faint); }
+
+.status{
+  border-inline-start:2px solid var(--fraise);
+  padding: 4px 0 4px 16px;
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.1em;
+  text-transform:uppercase; color: var(--bone);
+}
+
+/* ---------- sections ---------- */
+
+section{
+  padding-block: clamp(46px,6vw,78px);
+  border-top:1px solid var(--hairline);
+  display:flex; flex-direction:column; gap:22px;
+}
+
+.sec-head{ display:flex; flex-direction:column; gap:12px; }
+
+.slate{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.18em;
+  text-transform:uppercase; color: var(--bone-faint);
+  display:flex; gap:14px; align-items:baseline;
+}
+.slate b{ color: var(--fraise); font-weight:400; }
+
+h2{
+  font-size: clamp(1.5rem, 3.1vw, 2.15rem);
+  line-height:1.08; letter-spacing:-0.028em; font-weight:600;
+  margin:0; text-wrap:balance; max-width:22ch;
+}
+
+h3{
+  font-size: 1.02rem; line-height:1.35; letter-spacing:-0.012em;
+  font-weight:600; margin:0; color: var(--bone);
+  max-width: var(--measure);
+}
+
+h4{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.15em;
+  text-transform:uppercase; font-weight:400; color: var(--bone-dim);
+  margin:0;
+}
+
+p{ margin:0; max-width: var(--measure); color: var(--bone-dim); }
+p strong{ color: var(--bone); font-weight:600; }
+p em{ color: var(--bone); font-style:italic; }
+
+a{ color: var(--bone); text-decoration:none; border-bottom:1px solid var(--hairline-2); transition: border-color .3s, color .3s; }
+a:hover{ border-color: var(--fraise); }
+
+:focus-visible{ outline:2px solid var(--fraise); outline-offset:3px; }
+
+ul, ol{ margin:0; padding-inline-start:1.15em; max-width: var(--measure); color: var(--bone-dim); display:flex; flex-direction:column; gap:9px; }
+li strong{ color: var(--bone); font-weight:600; }
+li::marker{ color: var(--bone-faint); }
+
+.stack{ display:flex; flex-direction:column; gap:22px; }
+.stack-tight{ display:flex; flex-direction:column; gap:11px; }
+
+/* ---------- tables ---------- */
+
+.scroll{ overflow-x:auto; max-width:100%; scrollbar-width:thin; scrollbar-color: var(--hairline-2) transparent; }
+
+table{
+  border-collapse:collapse; width:100%; min-width:520px;
+  font-size:14.5px; font-variant-numeric: tabular-nums;
+}
+th{
+  text-align:start; font-family:var(--mono); font-weight:400;
+  font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+  color: var(--bone-faint); padding:0 18px 11px 0;
+  border-bottom:1px solid var(--hairline-2); white-space:nowrap;
+}
+td{
+  padding:13px 18px 13px 0; vertical-align:top;
+  border-bottom:1px solid var(--hairline); color: var(--bone-dim); line-height:1.5;
+}
+td strong{ color: var(--bone); font-weight:600; }
+th:last-child, td:last-child{ padding-inline-end:0; }
+td code, th code{ white-space:nowrap; }
+
+/* ---------- code / slate blocks ---------- */
+
+code{
+  font-family:var(--mono); font-size:.87em;
+  background: var(--ink-3); color: var(--bone);
+  padding:1px 5px; border:1px solid var(--hairline);
+}
+
+pre{
+  margin:0; background: var(--ink-2); border:1px solid var(--hairline);
+  padding: clamp(16px,2.4vw,24px); overflow-x:auto;
+  font-family:var(--mono); font-size:12.5px; line-height:1.75;
+  color: var(--bone-dim); white-space:pre; scrollbar-width:thin;
+  scrollbar-color: var(--hairline-2) transparent;
+}
+pre code{ background:none; border:none; padding:0; font-size:inherit; color:inherit; }
+pre b{ color: var(--bone); font-weight:400; }
+pre i{ color: var(--bone-faint); font-style:normal; }
+
+/* ---------- the ratio taxonomy strip (signature graphic) ---------- */
+
+.ratios{
+  display:flex; gap: clamp(10px,1.6vw,20px); align-items:flex-end;
+  overflow-x:auto; padding-bottom:6px;
+  scrollbar-width:thin; scrollbar-color: var(--hairline-2) transparent;
+}
+.ratio{ flex:0 0 auto; display:flex; flex-direction:column; gap:10px; }
+.ratio .box{
+  border:1px solid var(--hairline-2); background: var(--ink-2);
+  position:relative; height: 132px;
+}
+.ratio .box::after{
+  content:attr(data-r);
+  position:absolute; inset-block-end:7px; inset-inline-start:8px;
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; color: var(--bone-faint);
+}
+.r-tvc    .box{ aspect-ratio:2.39/1; }
+.r-recipe .box{ aspect-ratio:16/9; }
+.r-reel   .box{ aspect-ratio:9/16; height:196px; }
+.r-still  .box{ aspect-ratio:4/5; height:170px; }
+.r-menu   .box{ aspect-ratio:1/1; }
+.ratio .lbl{
+  font-family:var(--mono); font-size:10px; letter-spacing:.13em;
+  text-transform:uppercase; color: var(--bone-dim); white-space:nowrap;
+}
+
+/* ---------- swatches ---------- */
+
+.swatches{ display:grid; grid-template-columns:repeat(auto-fill,minmax(128px,1fr)); gap:1px; background:var(--hairline); border:1px solid var(--hairline); }
+.sw{ background:var(--ink); padding:14px; display:flex; flex-direction:column; gap:9px; }
+.sw .chip{ height:44px; border:1px solid var(--hairline); }
+.sw .n{ font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--bone-dim); }
+.sw .h{ font-family:var(--mono); font-size:10px; color:var(--bone-faint); }
+
+/* ---------- callout ---------- */
+
+.note{
+  border-inline-start:2px solid var(--fraise);
+  background: var(--ink-2);
+  padding: 16px 20px;
+  display:flex; flex-direction:column; gap:9px;
+  max-width: var(--measure);
+}
+.note p{ color: var(--bone); }
+
+.quiet{
+  border-inline-start:2px solid var(--hairline-2);
+  padding: 4px 0 4px 18px;
+  display:flex; flex-direction:column; gap:8px;
+  max-width: var(--measure);
+}
+
+/* ---------- ranked risk list ---------- */
+
+.risks{ display:flex; flex-direction:column; gap:1px; background:var(--hairline); border-block:1px solid var(--hairline); }
+.risk{ background:var(--ink); padding:16px 0 16px 18px; border-inline-start:2px solid var(--hairline-2); display:flex; flex-direction:column; gap:7px; }
+.risk.hi{ border-inline-start-color: var(--fraise); }
+.risk .rk{ font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--bone-faint); display:flex; gap:12px; }
+.risk.hi .rk b{ color:var(--fraise); font-weight:400; }
+.risk h3{ font-size:.98rem; }
+.risk p{ font-size:14.5px; }
+
+/* ---------- q list ---------- */
+
+.qs{ display:flex; flex-direction:column; gap:14px; }
+.q{ display:grid; grid-template-columns:52px 1fr; gap:14px; align-items:baseline; max-width:var(--measure); }
+.q .id{ font-family:var(--mono); font-size:11px; letter-spacing:.1em; color:var(--fraise); }
+.q p{ font-size:15px; }
+
+/* ---------- arabic sample ---------- */
+
+.ar-demo{ display:grid; gap:1px; background:var(--hairline); border:1px solid var(--hairline); grid-template-columns:1fr; }
+@media(min-width:720px){ .ar-demo{ grid-template-columns:1fr 1fr; } }
+.ar-demo > div{ background:var(--ink); padding:20px; display:flex; flex-direction:column; gap:10px; }
+.ar-demo .sample-en{ font-size:17px; line-height:1.6; color:var(--bone); }
+.ar-demo .sample-ar{ font-family:var(--arab); font-size:18.7px; line-height:1.85; color:var(--bone); direction:rtl; text-align:right; }
+
+/* ---------- phase table emphasis ---------- */
+
+.gate{ font-family:var(--mono); font-size:11px; color:var(--bone-dim); }
+
+hr{ border:none; border-top:1px solid var(--hairline); margin:0; }
+
+footer{
+  padding-block: clamp(40px,6vw,70px);
+  border-top:1px solid var(--hairline-2);
+  display:flex; flex-direction:column; gap:10px;
+}
+footer p{ font-family:var(--mono); font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--bone-faint); }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+<nav class="rail" aria-label="Section index">
+  <div class="rail-title">Contents</div>
+  <ol>
+    <li><a href="#a"><span>A</span>Executive summary</a></li>
+    <li><a href="#b"><span>B</span>Design direction</a></li>
+    <li><a href="#c"><span>C</span>Visual language</a></li>
+    <li><a href="#d"><span>D</span>Homepage IA</a></li>
+    <li><a href="#e"><span>E</span>Service page IA</a></li>
+    <li><a href="#f"><span>F</span>Portfolio model</a></li>
+    <li><a href="#g"><span>G</span>Video strategy</a></li>
+    <li><a href="#h"><span>H</span>Desktop / mobile</a></li>
+    <li><a href="#i"><span>I</span>Design system</a></li>
+    <li><a href="#j"><span>J</span>Typography</a></li>
+    <li><a href="#k"><span>K</span>Colour</a></li>
+    <li><a href="#l"><span>L</span>Grid &amp; spacing</a></li>
+    <li><a href="#m"><span>M</span>Motion</a></li>
+    <li><a href="#n"><span>N</span>Components</a></li>
+    <li><a href="#o"><span>O</span>Next.js</a></li>
+    <li><a href="#p"><span>P</span>i18n EN / AR</a></li>
+    <li><a href="#q"><span>Q</span>SEO</a></li>
+    <li><a href="#r"><span>R</span>Performance</a></li>
+    <li><a href="#s"><span>S</span>Accessibility</a></li>
+    <li><a href="#t"><span>T</span>Folder structure</a></li>
+    <li><a href="#u"><span>U</span>Phases</a></li>
+    <li><a href="#v"><span>V</span>Risks</a></li>
+    <li><a href="#w"><span>W</span>Open questions</a></li>
+    <li><a href="#x"><span>X</span>MVP scope</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<header class="hero">
+  <div class="frame-hero">
+    <h1>Fraise Studio<br><em>Pre-development analysis</em></h1>
+  </div>
+  <div class="hero-meta">
+    <span><b>Client</b> Fraise Studio · Amman, JO</span>
+    <span><b>Scope</b> Redesign + replatform</span>
+    <span><b>Stack</b> WordPress → Next.js</span>
+    <span><b>Locales</b> AR · EN</span>
+  </div>
+  <div class="status">No code until approved · this document is the deliverable</div>
+</header>
+
+<!-- ============ A ============ -->
+<section id="a">
+  <div class="sec-head">
+    <div class="slate"><b>A</b><span>Executive summary</span></div>
+    <h2>The IA argues against the positioning</h2>
+  </div>
+
+  <h4>What I verified before writing this</h4>
+  <p>I did not take the brief at face value. I crawled the live domain and the preview build. Four findings change the plan.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Finding</th><th>Evidence</th><th>Consequence</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Live site is WordPress</strong></td>
+        <td><code>robots.txt</code> carries the standard <code>wp-admin</code> / <code>wp-includes</code> / <code>wp-content</code> block</td>
+        <td>This is a replatform, not a redesign. Media currently lives in <code>/wp-content/uploads/</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>No sitemap exists</strong></td>
+        <td><code>robots.txt</code> declares no <code>Sitemap:</code> line; <code>/sitemap.xml</code> returns 404</td>
+        <td>The ~52 indexed URLs were found by crawl alone. A correct sitemap is an immediate, free win.</td>
+      </tr>
+      <tr>
+        <td><strong>Arabic is almost certainly the root locale</strong></td>
+        <td>The canonical is <code>fraise.studio/en/</code>. WordPress multilingual plugins put the <em>default</em> language at root and secondary at <code>/xx/</code>.</td>
+        <td>The strongest organic page sits on a root-level URL. Highest-risk item in the project.</td>
+      </tr>
+      <tr>
+        <td><strong><code>/work/</code> is not a portfolio</strong></td>
+        <td>On the preview, <code>/work/</code> renders five <em>service</em> tiles linking to <code>/services/*</code>. Projects live at <code>/projects/</code> — "قصص النجاح".</td>
+        <td>"The portfolio feels fragmented" has a structural cause, not a visual one.</td>
+      </tr>
+      <tr>
+        <td>Client roster is recoverable</td>
+        <td>BTS page names Jordina, Baker, Sunwhite, JoSweet, UMIC; contact page names Zaity, KFC, Thuraya Halloumi</td>
+        <td>Eight nameable brands — enough for a credible client wall today.</td>
+      </tr>
+      <tr>
+        <td>An editorial numbering motif already exists</td>
+        <td><code>01/05</code>, <code>01 / PEOPLE</code>, <code>02 / PROCESS</code> on preview pages</td>
+        <td>The one genuinely editorial device in the current brand. Systematise it rather than invent a new one.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>The actual problem</h3>
+  <p>The current site's weakness is <strong>not</strong> that it is ugly. It is that <strong>the information architecture argues against the positioning.</strong></p>
+  <p>A visitor who clicks "Work" — the single highest-intent action on a production studio site — is shown five service tiles with descriptive copy. The work is structurally prevented from ever being the hero. Every symptom the brief lists (small thumbnails, four per row, click-to-play, pagination, too much text, "feels like a freelancer") follows from a site organised around <em>what the studio sells</em> rather than <em>what the studio made</em>.</p>
+
+  <h3>Three jobs, in priority order</h3>
+  <ol>
+    <li><strong>Structural — make "Work" mean work.</strong> Projects become the primary content type; services become filtered views over projects, not a parallel hierarchy. This alone fixes most of the brief.</li>
+    <li><strong>Positional — convert a six-person roster into a production company.</strong> More a content problem than a design problem, and it needs an honest conversation (risk 5).</li>
+    <li><strong>Technical — replatform without dropping the Arabic Reels page.</strong> Everything else is recoverable. That page is not, cheaply.</li>
+  </ol>
+
+  <div class="note">
+    <h4>The bar</h4>
+    <p>Not "the most technically impressive website." A visitor lands, sees moving food photography at scale within 400ms of paint, understands within one scroll that this is a crew with a client roster and a facility, and can name three brands Fraise has shot for without reading a paragraph.</p>
+  </div>
+</section>
+
+<!-- ============ B ============ -->
+<section id="b">
+  <div class="sec-head">
+    <div class="slate"><b>B</b><span>Core design direction</span></div>
+    <h2>Black Room, Warm Plate</h2>
+  </div>
+
+  <p>The interface has <strong>no colour of its own.</strong> Achromatic ground, bone-white type, hairline rules, mono metadata. Every pixel of chroma on the page comes from the food.</p>
+  <p>This is not a stylistic preference — it is the operative argument of the design, and it is what keeps the site from looking AI-generated:</p>
+  <ul>
+    <li>It <strong>forbids</strong> gradients, glassmorphism, coloured blobs, tinted shadows and duotone overlays — not by taste, but because they would be the interface asserting colour it isn't entitled to.</li>
+    <li>It makes food photography read <strong>more saturated than it is</strong>, by contrast. A hero plate against <code>#0B0B0C</code> reads richer than the same plate on white or grey.</li>
+    <li>It matches the physical truth of the work: a grading suite, a blacked-out food studio, a cinema. The site should feel like the room where the work is finished.</li>
+  </ul>
+  <p>Every generic-portfolio reflex gets answered by one question: <em>does the interface earn colour here?</em> The answer is no, except for one accent reserved for interactive state.</p>
+
+  <h3>Positioning device — the slate</h3>
+  <p>A film slate is the production industry's own metadata object. Every piece of media carries one:</p>
+  <pre><code><b>JORDINA</b>          TVC          2023          2.39:1</code></pre>
+  <p>Mono, small, uppercase, tracked, bottom-inline-start of the frame. It does four jobs at once:</p>
+  <ol>
+    <li>Satisfies the client's explicit requirement — <strong>project and client name visible on every video</strong> — without captions that read like a portfolio.</li>
+    <li>Reads as <em>production infrastructure</em>, not portfolio decoration. Freelancers write captions; productions write slates.</li>
+    <li>Is <strong>locale-independent</strong> — client names, years and format notation are Latin/numeric in both AR and EN, so the slate survives RTL untouched.</li>
+    <li>Gives every frame a typographic anchor, which is what stops a full-bleed video grid from reading as a moodboard.</li>
+  </ol>
+
+  <h3>Structural device — aspect ratio as taxonomy</h3>
+  <p>The strongest single idea in this proposal. Each pillar has a native shape in the real world. Encode it:</p>
+
+  <div class="ratios">
+    <div class="ratio r-tvc"><div class="box" data-r="2.39:1"></div><div class="lbl">TVC</div></div>
+    <div class="ratio r-recipe"><div class="box" data-r="16:9"></div><div class="lbl">Recipes</div></div>
+    <div class="ratio r-reel"><div class="box" data-r="9:16"></div><div class="lbl">Reels</div></div>
+    <div class="ratio r-still"><div class="box" data-r="4:5"></div><div class="lbl">Stills</div></div>
+    <div class="ratio r-menu"><div class="box" data-r="1:1"></div><div class="lbl">Menu plate</div></div>
+  </div>
+
+  <ul>
+    <li>The work grid becomes <strong>self-organising and asymmetric for a reason.</strong> A row pairing a 2.39:1 with a 9:16 is visually dynamic <em>and</em> semantically legible — the editorial asymmetry the brief asks for, without arbitrary art direction.</li>
+    <li>A visitor learns the taxonomy <strong>without reading service names.</strong> After one scroll, vertical = reels.</li>
+    <li>It is a hard constraint that makes every future layout decision easier and stops the grid drifting into card soup.</li>
+  </ul>
+  <p>No card chrome. No rounded corners on media. Media is a <strong>frame</strong> — a sharp rectangle, radius <code>0</code>, <code>2px</code> maximum on controls only. Separation is hairline rules and whitespace, never shadows. Shadows imply floating cards; rules imply print.</p>
+</section>
+
+<!-- ============ C ============ -->
+<section id="c">
+  <div class="sec-head">
+    <div class="slate"><b>C</b><span>Visual language</span></div>
+    <h2>Rules that hold the direction together</h2>
+  </div>
+  <div class="stack-tight">
+    <p><strong>Ground.</strong> Near-black <code>#0B0B0C</code>, not <code>#000</code>. Pure black crushes against the letterboxed black of 2.39:1 video and erases the frame edge; it also renders as a hard OLED cutoff that looks cheap during fades.</p>
+    <p><strong>Full-bleed is the default; margins are the exception.</strong> The inverse of a normal portfolio. Media goes edge to edge unless there is a compositional reason to inset it. Text is the thing that gets a container.</p>
+    <p><strong>One h1 per page, and it is small.</strong> On a video-first site the largest typographic element should almost never be the page title. This is where most "premium studio" attempts fail — 120px type over the hero video reads as template instantly.</p>
+    <p><strong>Numbering as structure.</strong> Keep the existing <code>01 / PEOPLE</code> motif and apply it consistently — sections, projects, crew, BTS. Editorial pacing, free, already in the brand, culturally neutral across AR/EN.</p>
+    <p><strong>Scrims, not opacity.</strong> Slate text sits on a bottom-anchored gradient scrim, never a reduced-opacity wash across the frame. Dulling the whole frame dulls the food, which contradicts the direction.</p>
+    <p><strong>Motion is the only decoration.</strong> No illustration, no texture, no grain overlay, no noise. Grain in particular is the current AI-portfolio tell.</p>
+  </div>
+</section>
+
+<!-- ============ D ============ -->
+<section id="d">
+  <div class="sec-head">
+    <div class="slate"><b>D</b><span>Homepage architecture</span></div>
+    <h2>Engineer the fold, don't default to 100vh</h2>
+  </div>
+
+  <p>The client asked for "more videos visible when the page opens." The generic response is a 100vh hero video — which shows <strong>exactly one video</strong> and is the most common move on every reference site.</p>
+
+  <div class="note">
+    <h4>Recommendation</h4>
+    <p>The hero occupies <strong>88vh, not 100vh.</strong> The remaining ~12vh reveals the top edge of the first Selected Work row. It literally satisfies the request, proves scrollability without a bouncing chevron, is a deliberate compositional choice rather than a default, and costs nothing. Mobile uses <code>82svh</code> so browser chrome can't crop it.</p>
+  </div>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>#</th><th>Section</th><th>Content</th><th>Rationale</th></tr></thead>
+    <tbody>
+      <tr><td>01</td><td><strong>Hero reel</strong></td><td>Full-bleed 2.39:1 showreel, autoplay muted loop, poster-first, slate bottom-start</td><td>Video-first, immediate</td></tr>
+      <tr><td>02</td><td><strong>Positioning line</strong></td><td>One sentence, ≤12 words, full-width editorial band</td><td>"Minimal copy" means <em>one line</em>, not a short paragraph</td></tr>
+      <tr><td>03</td><td><strong>Selected Work</strong></td><td>5–6 projects in the editorial cadence, every piece slated</td><td>The core of the page</td></tr>
+      <tr><td>04</td><td><strong>Capabilities</strong></td><td>Five pillars, each a looping clip <em>in its own ratio</em></td><td>Teaches the taxonomy visually; replaces nine-service nav</td></tr>
+      <tr><td>05</td><td><strong>Clients</strong></td><td>Eight brand names set in type, large</td><td>See below</td></tr>
+      <tr><td>06</td><td><strong>The Studio</strong></td><td>Team + BTS teaser, crew stills, on-set footage, 3–4 hard numbers</td><td>The studio-not-freelancer proof. A real section, not a footer link.</td></tr>
+      <tr><td>07</td><td><strong>CTA</strong></td><td>One line, one action, contact visible</td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Client wall — set names in type, not logos</h3>
+  <p><strong>Do not build a logo grid.</strong> Three reasons, in order of weight:</p>
+  <ol>
+    <li>A grid of greyscale client logos is <em>the</em> SaaS "Trusted by" pattern — the fastest way to make a cinema-grade site look like a startup landing page.</li>
+    <li>Logo quality will be inconsistent. KFC's mark is a full-colour illustrated portrait; a local halloumi brand's is likely a plain wordmark. Normalising to greyscale flattens KFC's recognition and makes the small brands look like placeholders.</li>
+    <li>Names set at 48–72px in the site's own display face read as <em>editorial credit</em> — like a film's end titles — and stay on-brand.</li>
+  </ol>
+  <pre><code><b>KFC        ZAITY        JORDINA        BAKER
+SUNWHITE   JOSWEET      THURAYA        UMIC</b></code></pre>
+  <p>If the client insists on logos, the fallback is a logo revealed on hover over the typographic name — but argue for type first.</p>
+
+  <h3>Deliberately not on the homepage</h3>
+  <p>No testimonial carousel. No process-step diagram (that belongs on service pages). No awards badge row. No blog teaser. No numbers counting up on scroll — animated counters are a startup tell; numbers are set, not animated.</p>
+</section>
+
+<!-- ============ E ============ -->
+<section id="e">
+  <div class="sec-head">
+    <div class="slate"><b>E</b><span>Service page architecture</span></div>
+    <h2>One template, art-directed by ratio</h2>
+  </div>
+  <p>Do not build five bespoke layouts. The consistency <em>is</em> the studio signal. Each pillar is differentiated by its native aspect ratio and its hero asset — nothing else.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>#</th><th>Block</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>01</td><td>Hero</td><td>Full-bleed film <strong>in the pillar's native ratio</strong> — signals the format instantly</td></tr>
+      <tr><td>02</td><td>H1 + one line</td><td>≤20 words</td></tr>
+      <tr><td>03</td><td><strong>Capability tags</strong></td><td>Where the old nine granular services go. A crawlable, keyword-bearing text set — non-navigational. This solves the SEO consolidation problem.</td></tr>
+      <tr><td>04</td><td>Work grid</td><td>Filtered to this pillar, native ratio dominant, hover previews</td></tr>
+      <tr><td>05</td><td>Process strip</td><td>3–4 steps: pre-production, on-set food styling, grade. <strong>Freelancers don't publish process.</strong></td></tr>
+      <tr><td>06</td><td>Case study</td><td>One linked deep-dive</td></tr>
+      <tr><td>07</td><td>Adjacent pillars</td><td>Two links — internal equity plus genuine cross-sell</td></tr>
+      <tr><td>08</td><td>CTA</td><td>Contact form pre-filled with project type</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note">
+    <h4>Reels is the exception</h4>
+    <p>The Arabic Reels page is the strongest organic page in Search Console, so it is the <strong>most copy-rich</strong> of the five — the one page where I argue <em>against</em> minimal text. Target 350–500 Arabic words under real h2s, placed <em>below</em> the visual fold so it costs the visual experience nothing. Its 9:16 wall is also the most distinctive layout on the site. Good SEO and good art direction happen to coincide here.</p>
+  </div>
+</section>
+
+<!-- ============ F ============ -->
+<section id="f">
+  <div class="sec-head">
+    <div class="slate"><b>F</b><span>Portfolio interaction model</span></div>
+    <h2>Kill pagination, schedule the whitespace</h2>
+  </div>
+
+  <p>Numbered pagination is a listing convention borrowed from e-commerce and blogs. It fragments a body of work into arbitrary chunks and signals "there is a lot of this, sorted."</p>
+  <p><strong>Replace with an explicit "Load more" button — not infinite scroll.</strong> Infinite scroll makes the footer (where contact lives) unreachable, reads as a <em>feed</em> rather than a curated reel, and hurts both INP and crawlability. A button is user-initiated: better interaction latency, better data behaviour on mobile, and the first N stay in server-rendered HTML.</p>
+
+  <h3>The editorial cadence</h3>
+  <p>Not a uniform grid, and not random asymmetry — a repeating four-row rhythm. A <em>system</em>, which is precisely the argument against "AI-generated template".</p>
+  <pre><code><b>ROW A</b>   ████████████████████████████   <i>1 × full-bleed 2.39:1</i>
+<b>ROW B</b>   ███████████████ ██████████████   <i>2 × 16:9</i>
+<b>ROW C</b>   ████████████████     ███         <i>1 × large offset + 1 × 9:16, whitespace inline-end</i>
+<b>ROW D</b>   ██████ ██████ ██████             <i>3 × 4:5 stills</i></code></pre>
+  <ul>
+    <li><strong>Never four videos in a row.</strong> Maximum three, and only for 4:5 stills.</li>
+    <li>Maximum <strong>two</strong> moving-image pieces per row.</li>
+    <li>Row C's whitespace is mandatory, not optional — the breathing room the brief asks for, scheduled rather than sprinkled.</li>
+  </ul>
+
+  <h3>Filters</h3>
+  <p>A horizontal rail: <code>ALL · TVC · RECIPES · REELS · STILLS · MENU</code>. Filtering updates the URL via shallow routing (<code>/work?service=reels</code>) so a filtered view is shareable — but <strong>canonical always points to <code>/work</code></strong>. The five pillar pages are the indexable filtered views. This avoids five thin, near-duplicate parameterised pages competing with the pillars.</p>
+
+  <h3>Labelling</h3>
+  <p>Every piece, <strong>always visible</strong> — not hover-revealed. The client asked for this and they are right.</p>
+  <pre><code><b>SUMMER CAMPAIGN</b>
+<i>COCA-COLA · TVC · 2024</i></code></pre>
+  <p>Title in display face, credit line in mono, full opacity over a scrim at rest. Hover raises contrast and reveals the arrow affordance; it does not <em>introduce</em> the label.</p>
+</section>
+
+<!-- ============ G ============ -->
+<section id="g">
+  <div class="sec-head">
+    <div class="slate"><b>G</b><span>Video interaction strategy</span></div>
+    <h2>The section that decides premium vs broken</h2>
+  </div>
+
+  <h3>Two encodes per project, minimum</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Encode</th><th>Purpose</th><th>Spec</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Preview loop</strong></td><td>Grid hover / in-view autoplay</td><td>6–8s, silent, <strong>audio track stripped entirely</strong>, ~720p max (640px wide for grid tiles), H.264 + optional AV1/WebM, target <strong>&lt; 600 KB</strong>, faststart atom at head</td></tr>
+      <tr><td><strong>Full film</strong></td><td>Lightbox / project page</td><td>Adaptive HLS via streaming provider, with audio and captions</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Stripping the audio track isn't cosmetic — it saves real bytes, removes autoplay-policy edge cases entirely, and eliminates a whole bug class around muted video unmuting.</p>
+
+  <div class="note">
+    <h4>Posters must come from the video's own first frame</h4>
+    <p>If the poster is a separately art-directed still, the poster→video transition visibly jumps and the whole effect reads cheap. This is the single most common failure mode of hover-preview grids.</p>
+  </div>
+
+  <h3>Desktop</h3>
+  <pre><code>poster <i>(next/image, no &lt;video&gt; src yet)</i>
+  → pointerenter
+  → <b>120ms intent delay</b>          <i>prevents thrash on fast mouse sweeps</i>
+  → attach src, load, play()
+  → crossfade poster → video, 240ms
+  → pointerleave
+  → pause, currentTime = 0, crossfade back, 300ms
+  → keep src attached ~30s           <i>re-hover is instant</i>
+  → detach src when scrolled out of viewport</code></pre>
+  <p>The intent delay is not optional. Without it, dragging the cursor diagonally across a six-tile grid fires six <code>load()</code> calls and the browser thrashes.</p>
+  <p><strong>Concurrency cap: maximum two decoding videos at any time</strong> (hero + one preview). A module-level manager pauses the least-recent when a third starts — mobile Safari has a hard simultaneous-decoder limit and degrades unpredictably past it. The hero pauses when scrolled out of viewport; a hero looping off-screen all session is pure battery and decode cost.</p>
+
+  <h3>Mobile</h3>
+  <div class="note">
+    <h4>Recommendation</h4>
+    <p>Autoplay in viewport, but <strong>exactly one at a time</strong> — whichever card is nearest viewport centre.</p>
+  </div>
+  <p><em>Tap-to-preview</em> was rejected: on a site whose entire complaint is "not enough video visible", a mobile default state of zero motion defeats the brief, and most users would never tap. <em>Autoplay everything in view</em> was rejected: three or four simultaneous decoders on a mid-range Android is jank plus real data cost — a meaningful concern in this market.</p>
+  <p>One-at-a-time centred autoplay gives the <em>feeling</em> of a live, motion-rich page for the cost of a single decoder. Bail out to posters only when <code>prefers-reduced-motion</code>, <code>saveData</code>, or <code>effectiveType</code> is 2g.</p>
+
+  <h3>Keyboard parity</h3>
+  <p>The hover preview <strong>must also fire on <code>:focus-visible</code></strong>. A keyboard user tabbing the grid gets what a mouse user gets. One line, and almost every site with this pattern gets it wrong. The preview <code>&lt;video&gt;</code> is decorative and carries <code>aria-hidden="true"</code>; the wrapping link carries the accessible name.</p>
+</section>
+
+<!-- ============ H ============ -->
+<section id="h">
+  <div class="sec-head">
+    <div class="slate"><b>H</b><span>Desktop vs mobile</span></div>
+    <h2>Deliberate on both, not degraded on one</h2>
+  </div>
+  <div class="scroll">
+  <table>
+    <thead><tr><th></th><th>Desktop ≥1024px</th><th>Mobile &lt;768px</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Hero</strong></td><td>88vh, 2.39:1 source</td><td>82svh, <strong>separate portrait encode</strong></td></tr>
+      <tr><td><strong>Nav</strong></td><td>Inline, overlaid on hero</td><td>Full-screen overlay drawer</td></tr>
+      <tr><td><strong>Work grid</strong></td><td>Editorial cadence, up to 3 across</td><td>Single column, full-bleed, ratios preserved</td></tr>
+      <tr><td><strong>Video trigger</strong></td><td>Hover / focus-visible</td><td>Nearest-to-centre in-view autoplay</td></tr>
+      <tr><td><strong>Concurrent videos</strong></td><td>Max 2</td><td>Max 1</td></tr>
+      <tr><td><strong>Slate</strong></td><td>Always visible</td><td>Always visible, mono steps to 11px</td></tr>
+      <tr><td><strong>Filters</strong></td><td>Horizontal rail</td><td>Scrollable rail, never a dropdown</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">
+    <h4>Art-directed hero sources</h4>
+    <p>The mobile hero must be a genuinely different crop — a 4:5 or 9:16 encode, not a 2.39:1 letterboxed into a phone. Letterboxed anamorphic on mobile is ~30% black bars and destroys the "big video" impression the entire brief is about. Delivered with <code>&lt;source media="…"&gt;</code>: well-supported, free.</p>
+  </div>
+</section>
+
+<!-- ============ I ============ -->
+<section id="i">
+  <div class="sec-head">
+    <div class="slate"><b>I</b><span>Design system</span></div>
+    <h2>Tokens, and the rules that protect them</h2>
+  </div>
+
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#0B0B0C"></div><div class="n">Ink</div><div class="h">#0B0B0C</div></div>
+    <div class="sw"><div class="chip" style="background:#131315"></div><div class="n">Ink raised</div><div class="h">#131315</div></div>
+    <div class="sw"><div class="chip" style="background:#F2EFE9"></div><div class="n">Bone</div><div class="h">#F2EFE9</div></div>
+    <div class="sw"><div class="chip" style="background:#A8A49C"></div><div class="n">Bone dim</div><div class="h">#A8A49C</div></div>
+    <div class="sw"><div class="chip" style="background:#C8402F"></div><div class="n">Fraise</div><div class="h">#C8402F</div></div>
+  </div>
+
+  <pre><code><b>RATIO</b>  <i>the taxonomy</i>
+  tvc 2.39/1   recipe 16/9   reel 9/16   still 4/5   menu 1/1
+
+<b>SPACE</b>  <i>4px base, editorial jumps, deliberately sparse</i>
+  4  8  12  16  24  32  48  64  96  128  192
+
+<b>RADIUS</b>
+  media    0        <i>always</i>
+  control  2px      <i>maximum</i>
+
+<b>MOTION</b>
+  ease-cine   cubic-bezier(0.16, 1, 0.3, 1)
+  fast 240ms  <i>crossfades</i>
+  base 400ms  <i>hover</i>
+  slow 800ms  <i>section reveals</i>
+
+<b>BREAKPOINTS</b>
+  sm 480   md 768   lg 1024   xl 1440   2xl 1920</code></pre>
+
+  <h3>Rules that keep it intentional</h3>
+  <ul>
+    <li><strong>No arbitrary Tailwind values in feature code.</strong> <code>[13px]</code>, <code>[#1a1a1a]</code>, <code>mt-[27px]</code> are review-blockers. Extend the theme instead.</li>
+    <li><strong>No shadow utilities anywhere.</strong> Separation is hairlines and space.</li>
+    <li><strong>No <code>rounded-*</code> on media.</strong> Ever.</li>
+    <li>Every media element declares <code>aspect-ratio</code> from the ratio tokens — which is also the entire CLS strategy.</li>
+  </ul>
+</section>
+
+<!-- ============ J ============ -->
+<section id="j">
+  <div class="sec-head">
+    <div class="slate"><b>J</b><span>Typography</span></div>
+    <h2>Two scripts, two deliberate faces</h2>
+  </div>
+
+  <p>A "supports Arabic and Latin" superfamily is the lazy answer and it always compromises one script. Choose two faces and match them optically.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Role</th><th>Paid recommendation</th><th>Free, production-viable</th><th>Avoid</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Latin</strong></td><td>Söhne · Suisse Int'l</td><td><strong>Geist Sans</strong></td><td>Inter, Poppins, Montserrat, DM Sans</td></tr>
+      <tr><td><strong>Arabic</strong></td><td>29LT Bukra · TPTQ Greta Sans Arabic</td><td><strong>IBM Plex Sans Arabic</strong></td><td>Noto Kufi Arabic, Cairo</td></tr>
+      <tr><td><strong>Mono</strong></td><td>—</td><td>Geist Mono · JetBrains Mono</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Arabic is the strongest organic market and cannot get a fallback face. Noto Kufi and Cairo read as "default Arabic web font" to an Arabic-speaking audience — exactly the freelancer signal we are removing. Budget roughly <strong>$300–800</strong> for a licensed Arabic web face.</p>
+  <p>Mono is used only for slate metadata, section numbering and filter labels. There is no Arabic monospace convention and it doesn't matter — <strong>slate content is Latin/numeric in both locales</strong>, so the system is locale-invariant.</p>
+
+  <h3>Arabic typesetting rules — non-negotiable</h3>
+  <p>This is where "Arabic as first-class" is actually proven:</p>
+  <ol>
+    <li><strong>Arabic runs ~8–12% larger</strong> than Latin at the same optical size. Apply a multiplier on <code>[lang="ar"]</code> inside the type scale.</li>
+    <li><strong>More line-height</strong> — roughly <code>+0.15</code> over the Latin value, to clear ascenders and diacritics.</li>
+    <li><strong>Never uppercase Arabic.</strong> There is no case in the script. Every <code>text-transform: uppercase</code> must be gated to <code>[lang="en"]</code>.</li>
+    <li><strong>Never letter-space Arabic.</strong> It is a connected script; positive tracking breaks the joins and looks like a rendering bug. Gate every <code>letter-spacing</code> rule too.</li>
+    <li>Use <strong>Western Arabic numerals (0–9)</strong> throughout, including in AR — standard commercial practice in Jordan, and it keeps slate data consistent across locales.</li>
+  </ol>
+
+  <div class="ar-demo">
+    <div>
+      <h4>EN · base size, base leading</h4>
+      <p class="sample-en">We make the image that makes the product seen and remembered.</p>
+    </div>
+    <div>
+      <h4>AR · +10% size, +0.15 leading</h4>
+      <p class="sample-ar">نصنع الصورة التي تجعل المنتج يُرى ويُتذكّر</p>
+    </div>
+  </div>
+
+  <h3>Type scale — deliberately gapped</h3>
+  <p>A large jump from body to display with nothing in between. Mid-sizes are what make a page feel like a template.</p>
+  <pre><code>display-xl   clamp(2.75rem, 6vw,  5.5rem)     <i>hero, section openers</i>
+display-l    clamp(2rem,   4vw,   3.25rem)    <i>project titles</i>
+display-m    clamp(1.5rem, 2.5vw, 2rem)       <i>subsection</i>
+body-l       1.125rem                          <i>positioning line only</i>
+body         1rem                              <i>running copy</i>
+slate        0.75rem  mono, +0.08em            <i>EN tracking only</i></code></pre>
+</section>
+
+<!-- ============ K ============ -->
+<section id="k">
+  <div class="sec-head">
+    <div class="slate"><b>K</b><span>Colour strategy</span></div>
+    <h2>One accent, and it is never decorative</h2>
+  </div>
+  <p><code>--fraise: #C8402F</code> is derived from the brand name — <em>fraise</em> = strawberry — so it carries brand logic rather than being arbitrary.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Permitted, exhaustively</th><th>Forbidden</th></tr></thead>
+    <tbody>
+      <tr><td><code>:focus-visible</code> ring</td><td>Backgrounds</td></tr>
+      <tr><td>Active filter state</td><td>Buttons at rest</td></tr>
+      <tr><td>Link hover underline</td><td>Borders at rest, headings, icons at rest</td></tr>
+      <tr><td>The recording dot — one instance, homepage hero</td><td>Hover fills, and any gradient</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>This restriction is the guardrail. The moment the accent becomes a button fill, the site starts sliding toward a landing page. Enforce it in review.</p>
+
+  <h3>Contrast</h3>
+  <ul>
+    <li><code>#F2EFE9</code> on <code>#0B0B0C</code> → <strong>~17:1</strong>. AAA comfortably.</li>
+    <li><code>#A8A49C</code> on <code>#0B0B0C</code> → <strong>~8.5:1</strong>. AA for the 12px mono slate.</li>
+    <li><code>#C8402F</code> on <code>#0B0B0C</code> → <strong>~4.6:1</strong>. AA for non-text UI and large text. <strong>Never body copy.</strong> The focus ring adds a 2px offset for shape contrast on top of colour.</li>
+  </ul>
+  <p><strong>Warm white, not neutral.</strong> <code>#F2EFE9</code> rather than <code>#FFFFFF</code>. Pure white next to food photography reads clinical and slightly blue; warm bone sits with the food and makes the page feel lit rather than printed.</p>
+</section>
+
+<!-- ============ L ============ -->
+<section id="l">
+  <div class="sec-head">
+    <div class="slate"><b>L</b><span>Grid &amp; spacing</span></div>
+    <h2>Twelve columns, written in logical properties</h2>
+  </div>
+  <pre><code><b>padding-inline</b>        <i>not padding-left / right</i>
+<b>margin-inline</b>         <i>not margin-left / right</i>
+<b>inset-inline-start</b>    <i>not left</i>
+<b>border-inline-start</b>   <i>not border-left</i>
+<b>text-align: start</b>     <i>not text-align: left</i></code></pre>
+  <p>Tailwind's <code>ps-*</code>, <code>pe-*</code>, <code>ms-*</code>, <code>me-*</code>, <code>start-*</code>, <code>end-*</code> map directly. <strong>A single <code>pl-*</code> in the codebase is an RTL bug</strong> — so this is lint-enforceable, not a convention.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Container</th><th>Width</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td><code>full</code></td><td>100vw</td><td>Media, hero, work rows</td></tr>
+      <tr><td><code>wide</code></td><td>1600px</td><td>Grid sections, client wall</td></tr>
+      <tr><td><code>text</code></td><td>720px</td><td>Running copy, process, legal</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Text never exceeds 720px — roughly 70 Latin characters, a comfortable Arabic measure. Gutters run <code>24px</code> mobile → <code>48px</code> md → <code>64px</code> lg. Vertical rhythm between sections runs <code>96px</code> → <code>192px</code>. Large section spacing is one of the cheapest and most reliable premium signals: it is what separates "editorial pacing" from "sections stacked".</p>
+</section>
+
+<!-- ============ M ============ -->
+<section id="m">
+  <div class="sec-head">
+    <div class="slate"><b>M</b><span>Motion</span></div>
+    <h2>No animation library in v1</h2>
+  </div>
+  <p>The complete motion vocabulary this site needs: poster↔video crossfade, section reveal on enter, media hover scale, nav overlay, filter state. All five are CSS plus IntersectionObserver.</p>
+  <p>Framer Motion costs ~35–45 KB gzip <em>and</em> forces <code>"use client"</code> onto layout-level components, which conflicts directly with the Server-Components-by-default requirement. GSAP is ~50 KB+ and is justified only by timeline-sequenced or scroll-scrubbed animation, which this direction explicitly rejects.</p>
+  <div class="quiet">
+    <p><strong>The one case that would justify revisiting:</strong> a shared-element transition from work card to project detail. Use the native <strong>View Transitions API</strong> before reaching for a library — progressive enhancement is automatic, and unsupported browsers get an instant navigation.</p>
+  </div>
+
+  <h3>Principles</h3>
+  <ul>
+    <li><strong>Slow.</strong> 600–800ms reveals. Fast animation reads as UI; slow reads as cinema.</li>
+    <li><strong>One curve.</strong> <code>cubic-bezier(0.16, 1, 0.3, 1)</code> on everything entering. Never <code>ease-in-out</code> on entrances, never a spring, never a bounce.</li>
+    <li><strong>Opacity + 16px translate is the entire reveal.</strong> No scale-in, blur-in, rotate or clip-path wipe.</li>
+    <li><strong>Stagger ≤60ms, ≤3 items.</strong> Longer staggers make a grid feel like it's loading badly.</li>
+    <li><strong>Nothing animates twice.</strong> Reveals fire once; the observer unobserves.</li>
+    <li><strong>Nothing animates on scroll position.</strong> No parallax, no scroll-scrub, no pinned sections — the current AI-portfolio signature, and it wrecks INP.</li>
+  </ul>
+  <div class="note">
+    <h4>Reduced motion must be handled in JS, not only CSS</h4>
+    <p>The CSS media query does not stop a <code>&lt;video autoplay&gt;</code>. Under <code>prefers-reduced-motion</code>: reveals apply their end state immediately, <strong>all video autoplay is disabled</strong>, and every card exposes an explicit play control.</p>
+  </div>
+</section>
+
+<!-- ============ N ============ -->
+<section id="n">
+  <div class="sec-head">
+    <div class="slate"><b>N</b><span>Component architecture</span></div>
+    <h2>The server / client boundary is the whole decision</h2>
+  </div>
+  <p>The naïve approach makes <code>WorkCard</code> a client component because it needs hover — dragging the poster <code>&lt;Image&gt;</code>, the slate markup and the title into the client bundle, multiplied by every card on the page.</p>
+  <p><strong>Use the children-as-props pattern.</strong> A thin client wrapper receives already-rendered server markup:</p>
+  <pre><code>&lt;<b>HoverPreview</b>          <i>"use client", ~1.5 KB — video element + handlers ONLY</i>
+  src={project.previewSrc}
+  ratio={project.ratio}
+&gt;
+  &lt;<b>WorkCardContent</b> /&gt;  <i>Server Component: Image poster, slate, title, link</i>
+&lt;/HoverPreview&gt;</code></pre>
+  <p>The server component is serialised as an RSC payload and never shipped as JS. The client bundle holds the interaction logic and nothing else.</p>
+
+  <h3>Inventory</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Group</th><th>Components</th></tr></thead>
+    <tbody>
+      <tr><td>Primitives</td><td><code>Container</code> <code>Rule</code> <code>Slate</code> <code>SectionNumber</code> <code>Eyebrow</code> <code>LinkArrow</code></td></tr>
+      <tr><td>Media</td><td><code>Poster</code> <code>HoverPreview</code> <code>InViewVideo</code> <code>HeroReel</code> <code>Lightbox</code> <em>(dynamic import)</em></td></tr>
+      <tr><td>Composites</td><td><code>WorkCard</code> <code>WorkGrid</code> <code>FilterRail</code> <code>PillarCard</code> <code>TeamCard</code> <code>BTSCard</code> <code>ClientWall</code> <code>ProcessStrip</code> <code>CTABand</code></td></tr>
+      <tr><td>Chrome</td><td><code>Header</code> <code>NavOverlay</code> <code>LocaleSwitcher</code> <code>Footer</code></td></tr>
+      <tr><td>Logic</td><td><code>useVideoConcurrency</code> <code>useInView</code> <code>useReducedMotion</code> <code>useIntentDelay</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <ul>
+    <li>Data shape defined once in <code>types/content.ts</code>; no prop-drilling of loose strings.</li>
+    <li>No component takes a <code>variant</code> prop with more than three values — beyond that it should be two components.</li>
+    <li>No barrel <code>index.ts</code> re-exports. They defeat tree-shaking and slow the compiler.</li>
+    <li>A component used once lives beside its route, not in <code>components/</code>.</li>
+  </ul>
+</section>
+
+<!-- ============ O ============ -->
+<section id="o">
+  <div class="sec-head">
+    <div class="slate"><b>O</b><span>Next.js architecture</span></div>
+    <h2>Fully static, typed content, streamed video</h2>
+  </div>
+  <p>App Router, React Server Components by default, TypeScript strict, Tailwind. Everything is <strong>static</strong> — <code>generateStaticParams</code> over locales, project slugs and pillar slugs. There is no user-specific content and no real-time data, so full SSG gives CDN-edge HTML, which is most of the performance story before we optimise anything. The only dynamic surface is the contact form's server action.</p>
+
+  <h3>Content layer — v1</h3>
+  <p>Typed TS data modules, not MDX and not a CMS yet: <code>content/projects.ts</code>, <code>pillars.ts</code>, <code>team.ts</code>, <code>clients.ts</code>, <code>bts.ts</code>, <code>copy/en.ts</code>, <code>copy/ar.ts</code>.</p>
+  <p>Fully typed, zero runtime cost, tree-shakeable, trivially diffable in git, and it lets us build the whole site with realistic mock data immediately. <strong>This is explicitly a v1 decision</strong> — the client will want to add work themselves, so designing <code>Project</code> as a clean interface now makes the CMS migration mechanical.</p>
+
+  <div class="note">
+    <h4>Do not serve MP4 from <code>/public</code></h4>
+    <p>Full bandwidth rates per byte, no adaptive bitrate, no per-device rendition, no analytics. <strong>Full films → Mux</strong> (or Cloudflare Stream): HLS, automatic poster extraction at any timestamp, per-title encoding, playback analytics. Mux's frame extraction is what guarantees the seamless poster→video transition in section G. <strong>Preview loops → static CDN assets</strong> — at &lt;600 KB, adaptive streaming is overhead; a plain MP4 with a faststart atom is faster to first frame. Decide this before build, not after launch.</p>
+  </div>
+
+  <h3>Dependency policy</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Dependency</th><th>Justification</th></tr></thead>
+    <tbody>
+      <tr><td><code>next</code> <code>react</code> <code>typescript</code></td><td>—</td></tr>
+      <tr><td><code>tailwindcss</code></td><td>Design-token enforcement + logical-property utilities for RTL</td></tr>
+      <tr><td><code>sharp</code></td><td>Build-time image optimisation</td></tr>
+      <tr><td><code>next-intl</code> <em>(conditional)</em></td><td>Only if copy volume or formatting needs justify it — see P</td></tr>
+      <tr><td><code>@mux/mux-player-react</code> <em>(phase 2)</em></td><td>Full-film lightbox only, dynamically imported</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><strong>Not using:</strong> Framer Motion, GSAP, Lenis, Swiper, a UI kit, a form library, a state manager.</p>
+</section>
+
+<!-- ============ P ============ -->
+<section id="p">
+  <div class="sec-head">
+    <div class="slate"><b>P</b><span>Internationalization · EN / AR</span></div>
+    <h2>The URL decision is the highest-stakes call</h2>
+  </div>
+  <p>The brief says Arabic Reels is the strongest organic page and must not be damaged. The live canonical is <code>fraise.studio/en/</code>, which on a WordPress multilingual setup means <strong>Arabic is served from the root.</strong></p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th></th><th>Option A — preserve current shape</th><th>Option B — explicit /ar + /en</th></tr></thead>
+    <tbody>
+      <tr><td><strong>AR URLs</strong></td><td><strong>Unchanged</strong> (<code>/reels/</code>)</td><td>All change (<code>/ar/reels/</code>)</td></tr>
+      <tr><td><strong>EN URLs</strong></td><td>Unchanged (<code>/en/reels/</code>)</td><td>Unchanged</td></tr>
+      <tr><td><strong>hreflang</strong></td><td>Works fine</td><td>Marginally cleaner</td></tr>
+      <tr><td><strong>Implementation</strong></td><td>Middleware rewrite <code>/x</code> → <code>/ar/x</code>, public URL unchanged</td><td>Trivial, out of the box</td></tr>
+      <tr><td><strong>SEO risk</strong></td><td><strong>Near zero on the crown-jewel page</strong></td><td>301s on every AR URL; typically weeks of volatility</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note">
+    <h4>Recommendation — Option A</h4>
+    <p>Accept about half a day of extra middleware complexity to avoid changing a single URL on the highest-value pages in the estate. The "cleaner" URL structure is an engineering aesthetic; the ranking is revenue.</p>
+    <p><strong>Conditional on verifying that Arabic is in fact at root today (question W1).</strong> If English turns out to be at root, the calculus inverts and Option B is correct.</p>
+  </div>
+
+  <pre><code>app/[locale]/...        <i>internal routing, locale ∈ {ar, en}</i>
+middleware.ts           <i>rewrites  /reels     → /ar/reels   (URL unchanged)</i>
+                        <i>passes    /en/reels  → /en/reels</i></code></pre>
+
+  <p><code>app/[locale]/layout.tsx</code> sets <code>&lt;html lang dir&gt;</code> server-side, never via client JS. Both locales build from the same route tree, so structural drift between languages is impossible — content equivalence is guaranteed by construction, which is exactly what hreflang reciprocity requires.</p>
+
+  <h3>i18n library — probably none</h3>
+  <pre><code><i>~40 lines total</i>
+const dictionaries = { en: () =&gt; import('@/content/copy/en'),
+                       ar: () =&gt; import('@/content/copy/ar') };
+export const getDictionary = async (locale: Locale) =&gt;
+  (await dictionaries[locale]()).default;</code></pre>
+  <p>With <code>as const</code>, TypeScript catches a missing translation key at compile time — better DX than most i18n libraries provide. <strong>Adopt <code>next-intl</code> only if</strong> we need per-locale plural rules, date/number formatting or rich-text interpolation. A marketing site whose most complex dynamic value is <code>2023</code> does not.</p>
+
+  <h3>RTL beyond direction</h3>
+  <ul>
+    <li><strong>Logical properties everywhere</strong>, lint-enforced.</li>
+    <li><strong>Mirror directional icons</strong> — arrows, chevrons, next-project indicator.</li>
+    <li><strong>Do not mirror</strong> media, logos, play buttons, the slate block, Latin brand names, or numerals.</li>
+    <li>The <strong>language switcher must swap to the equivalent page</strong>, never the homepage. <code>/en/services/reels/</code> ↔ <code>/services/reels/</code>. Dropping the user on the homepage is the most common bilingual failure and it is a conversion killer.</li>
+    <li>Arabic copy must be <strong>written, not translated.</strong> Machine-translated Arabic is immediately obvious to a Jordanian client and destroys the positioning.</li>
+  </ul>
+</section>
+
+<!-- ============ Q ============ -->
+<section id="q">
+  <div class="sec-head">
+    <div class="slate"><b>Q</b><span>SEO architecture</span></div>
+    <h2>A weak baseline, which is good news</h2>
+  </div>
+  <p>No sitemap declared, none at <code>/sitemap.xml</code>, WordPress default robots rules. The estate ranks on ~52 URLs essentially without technical support — correct fundamentals alone should produce measurable gain.</p>
+
+  <h3>Metadata</h3>
+  <ul>
+    <li><code>generateMetadata</code> per route, per locale. Unique authored title and description on every page — never templated from a slug.</li>
+    <li><code>metadataBase</code> set once; all canonicals absolute and self-referencing.</li>
+    <li><code>alternates.languages</code> on every route — Next emits reciprocal hreflang automatically. <code>x-default</code> → the English URL.</li>
+    <li><strong>OG image per project, using the project's own poster frame</strong>, generated at build via <code>next/og</code> with the slate baked in. A Fraise-branded still of the actual work shared into WhatsApp — the dominant sharing channel in this market — is worth far more than a generic OG card.</li>
+  </ul>
+
+  <h3>The redirect map — the critical work</h3>
+  <ol>
+    <li>Export Search Console → Pages, <strong>16-month window</strong>, both locales. The authoritative list of URLs with earned equity.</li>
+    <li>Crawl the live site with Screaming Frog for the complete inventory including orphans.</li>
+    <li>Pull server access logs if available, for URLs with traffic but no impressions.</li>
+    <li>Union, dedupe, and map <strong>every</strong> URL to a target. No URL left unmapped.</li>
+  </ol>
+
+  <div class="note">
+    <h4>The consolidation trap</h4>
+    <p>Nine granular services collapse to five pillars, so many are many-to-one redirects — and <strong>a 301 to a page that does not discuss the old topic is treated by Google as a soft 404</strong>, passing little or no equity.</p>
+    <p>The consolidation only works if the pillar pages <em>absorb the content.</em> That is exactly what the capability-tags block in section E is for: each retired granular service becomes a named, crawlable section on its pillar page, so the query still has a legitimate target. <strong>The redirect map and the pillar page content must be designed together</strong>, not sequenced.</p>
+  </div>
+
+  <p><strong>Reels is priority zero.</strong> Every reels-related legacy URL 301s to the Arabic Reels pillar. It ships in phase 1 with content equal or richer than today's. Do not change its URL, do not reduce its copy, do not launch it in the same release as any other AR structural change.</p>
+
+  <h3>Structured data</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Type</th><th>Where</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td><code>Organization</code> + <code>LocalBusiness</code></td><td>Root layout</td><td>Amman address, <code>sameAs</code> Instagram/LinkedIn, logo. Feeds the knowledge panel.</td></tr>
+      <tr><td><strong><code>VideoObject</code></strong></td><td><strong>Every project and BTS item</strong></td><td>The biggest opportunity here. Needs <code>name</code>, <code>thumbnailUrl</code>, <code>uploadDate</code>, <code>duration</code>, <code>contentUrl</code>. Unlocks video rich results and Google Video indexing — a video-first studio should be competing there and currently isn't.</td></tr>
+      <tr><td><code>BreadcrumbList</code></td><td>Work, service, project pages</td><td>—</td></tr>
+      <tr><td><code>Person</code></td><td>Team page, per member</td><td>Carries the studio-not-freelancer signal into the SERP too</td></tr>
+      <tr><td><code>Service</code></td><td>Each pillar page</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><code>app/sitemap.ts</code> emits both locales with per-entry <code>alternates.languages</code>. Consider a <strong>video sitemap</strong> extension for the project inventory — few regional competitors will have one. <code>app/robots.ts</code> declares the sitemap, which the current site fails to do. Filter-parameter URLs are <code>noindex</code>, canonical to <code>/work</code>.</p>
+</section>
+
+<!-- ============ R ============ -->
+<section id="r">
+  <div class="sec-head">
+    <div class="slate"><b>R</b><span>Performance</span></div>
+    <h2>The poster is the LCP element, never the video</h2>
+  </div>
+  <p>This is the whole trick to a video hero with good Core Web Vitals:</p>
+  <ol>
+    <li>Hero <strong>poster</strong> ships as <code>next/image</code> with <code>priority</code> and <code>fetchPriority="high"</code>, AVIF with WebP fallback, sized per breakpoint. It paints as the LCP element.</li>
+    <li>Hero <code>&lt;video&gt;</code> renders with <code>preload="none"</code> and <strong>no <code>src</code> attribute</strong>.</li>
+    <li>After load / on <code>requestIdleCallback</code>, attach <code>src</code> and <code>play()</code>.</li>
+    <li>Crossfade video over the poster in 240ms.</li>
+  </ol>
+  <p>LCP therefore never waits on a video byte. The user sees a full-bleed cinematic frame immediately and it starts moving a beat later — which, incidentally, reads as <em>more</em> premium than a video stuttering into existence.</p>
+
+  <h3>Budgets, enforced in CI</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Metric</th><th>Target</th></tr></thead>
+    <tbody>
+      <tr><td>LCP — mobile, 4G throttled</td><td><strong>&lt; 2.0s</strong></td></tr>
+      <tr><td>CLS</td><td><strong>&lt; 0.05</strong></td></tr>
+      <tr><td>INP</td><td><strong>&lt; 200ms</strong></td></tr>
+      <tr><td>JS transferred, homepage</td><td><strong>&lt; 120 KB gzip</strong></td></tr>
+      <tr><td>Total transferred before hover</td><td><strong>&lt; 1.2 MB</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <ul>
+    <li><strong>CLS → zero by construction.</strong> Every media element declares <code>aspect-ratio</code> from the ratio tokens — which is why the taxonomy doubles as the layout-stability strategy.</li>
+    <li><strong>Fonts.</strong> Self-hosted via <code>next/font</code>, aggressively subset — Arabic faces are large. Preload only the two faces used above the fold. Use <code>size-adjust</code> fallback metrics; a badly matched Arabic fallback causes visible reflow.</li>
+    <li><strong>Images.</strong> AVIF primary, explicit <code>sizes</code> on every instance — a missing <code>sizes</code> on a full-bleed image is the most common cause of a 3× oversized download.</li>
+    <li><strong>JS.</strong> <code>Lightbox</code> and the Mux player are <code>next/dynamic</code>, no SSR. Client components are leaves, never layout.</li>
+    <li><strong>Third parties.</strong> Analytics only, <code>strategy="lazyOnload"</code>. No chat widget, no heatmap, no tag manager — any one of those can cost more than our entire JS budget.</li>
+  </ul>
+  <p><strong>Lighthouse CI gates every PR</strong> against these budgets. On a video-heavy site, performance decays silently unless it is gated.</p>
+</section>
+
+<!-- ============ S ============ -->
+<section id="s">
+  <div class="sec-head">
+    <div class="slate"><b>S</b><span>Accessibility</span></div>
+    <h2>WCAG 2.2 AA, with two things most sites miss</h2>
+  </div>
+  <ul>
+    <li><strong>Semantics.</strong> One <code>&lt;h1&gt;</code> per page. Proper landmarks. Work grid is a <code>&lt;ul&gt;</code>; each card an <code>&lt;li&gt;</code> with one link wrapping the whole card. Skip link first in tab order.</li>
+    <li><strong>Focus.</strong> <code>:focus-visible</code> ring in the accent with 2px offset — visible over both the near-black ground <em>and</em> bright video frames, because the offset gives shape contrast where colour alone might fail.</li>
+    <li><strong>Keyboard parity for previews.</strong> Hover preview fires on <code>:focus-visible</code> too. Non-negotiable.</li>
+    <li><strong>Preview loops</strong> are <code>aria-hidden</code>, decorative, no controls — the link carries the name. <strong>Full films</strong> get native controls, focus trap, <code>Esc</code> to close, focus returned to trigger.</li>
+    <li><strong>Reduced motion</strong> handled in CSS <em>and</em> JS; all autoplay off, explicit play control on every card.</li>
+    <li><strong>RTL correctness is an accessibility issue</strong>, not just visual. Enforce with a custom lint rule banning physical-direction utilities outside an allowlist.</li>
+  </ul>
+
+  <div class="note">
+    <h4>Captions are a content deliverable with real cost</h4>
+    <p>WCAG 1.2.2 requires captions for prerecorded audio. Fraise's TVCs have Arabic voiceover and music, so full films need caption tracks in Arabic and English. <strong>Raise this with the client now, not at launch.</strong></p>
+  </div>
+</section>
+
+<!-- ============ T ============ -->
+<section id="t">
+  <div class="sec-head">
+    <div class="slate"><b>T</b><span>Folder structure</span></div>
+    <h2>Recommended layout</h2>
+  </div>
+  <pre><code>fraise-studio/
+├── <b>app/</b>
+│   ├── [locale]/
+│   │   ├── layout.tsx                 <i>html lang dir, fonts, JSON-LD</i>
+│   │   ├── page.tsx                   <i>home</i>
+│   │   ├── work/page.tsx  ·  work/[slug]/page.tsx
+│   │   ├── services/[pillar]/page.tsx <i>five pillars, one template</i>
+│   │   ├── studio/  team/  behind-the-scenes/
+│   │   ├── case-studies/[slug]/page.tsx
+│   │   └── contact/page.tsx
+│   ├── sitemap.ts   robots.ts   opengraph-image.tsx
+│   └── globals.css
+│
+├── <b>components/</b>
+│   ├── primitives/    <i>Container Rule Slate SectionNumber Eyebrow LinkArrow</i>
+│   ├── media/         <i>Poster HoverPreview InViewVideo HeroReel Lightbox</i>
+│   ├── work/          <i>WorkCard WorkGrid FilterRail</i>
+│   ├── sections/      <i>ClientWall PillarGrid ProcessStrip StudioTeaser CTABand</i>
+│   └── chrome/        <i>Header NavOverlay LocaleSwitcher Footer</i>
+│
+├── <b>content/</b>
+│   ├── projects.ts  pillars.ts  team.ts  clients.ts  bts.ts  redirects.ts
+│   └── copy/  en.ts  ar.ts
+│
+├── <b>lib/</b>
+│   ├── i18n.ts            <i>getDictionary, locales, dir()</i>
+│   ├── video-manager.ts   <i>global concurrency cap</i>
+│   ├── seo.ts             <i>metadata + JSON-LD builders</i>
+│   └── hooks/
+│
+├── types/content.ts
+├── middleware.ts          <i>locale rewrite</i>
+├── next.config.ts         <i>301 redirect map</i>
+└── tailwind.config.ts     <i>design tokens</i></code></pre>
+  <p>The redirect map lives in <code>next.config.ts</code> as a typed array imported from <code>content/redirects.ts</code> — reviewable in a PR, diffable, and testable.</p>
+</section>
+
+<!-- ============ U ============ -->
+<section id="u">
+  <div class="sec-head">
+    <div class="slate"><b>U</b><span>Development phases</span></div>
+    <h2>Eight phases, with a real go/no-go</h2>
+  </div>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Phase</th><th>Scope</th><th>Gate to exit</th></tr></thead>
+    <tbody>
+      <tr><td><strong>0 — Discovery</strong><br><span class="gate">before any code</span></td><td>Asset audit. GSC 16-month export. Screaming Frog crawl. Verify AR/EN URL structure. Confirm nine→five mapping. Font licensing. Video host.</td><td class="gate">Redirect map drafted; asset count confirmed sufficient</td></tr>
+      <tr><td><strong>1 — Foundation</strong></td><td>Repo, tokens, both fonts, <code>[locale]</code> routing, middleware, RTL harness, primitives, Lighthouse CI</td><td class="gate">A blank page renders correctly in AR-RTL and EN-LTR with correct lang/dir and both fonts</td></tr>
+      <tr><td><strong>2 — Media system</strong></td><td><code>Poster</code>, <code>HoverPreview</code>, <code>InViewVideo</code>, <code>HeroReel</code>, concurrency manager, reduced-motion + saveData paths</td><td class="gate">A 12-card grid holds LCP &lt; 2.0s and never exceeds 2 decoders</td></tr>
+      <tr><td><strong>3 — Homepage</strong></td><td>All seven sections, real assets, both locales</td><td class="gate"><strong>Art-direction review. Go / no-go on the direction.</strong></td></tr>
+      <tr><td><strong>4 — Work &amp; project detail</strong></td><td>Grid cadence, filters, load-more, project pages, lightbox</td><td class="gate">—</td></tr>
+      <tr><td><strong>5 — Pillars &amp; studio</strong></td><td>Five pillars from one template, team, BTS, case studies, contact + server action</td><td class="gate">—</td></tr>
+      <tr><td><strong>6 — SEO &amp; migration</strong></td><td>Metadata, JSON-LD, sitemaps, robots, <strong>full redirect map</strong>, OG images, staging crawl validation</td><td class="gate">Screaming Frog on staging: zero 404s from the legacy list, zero redirect chains</td></tr>
+      <tr><td><strong>7 — Launch</strong></td><td>Deploy, GSC resubmission, redirect monitoring</td><td class="gate">Daily GSC checks 14 days, weekly for 8 weeks, <strong>Arabic Reels tracked individually</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Phase 3 is the real decision point. If the homepage doesn't look like a production studio with real assets in place, we change direction there — not at phase 6.</p>
+</section>
+
+<!-- ============ V ============ -->
+<section id="v">
+  <div class="sec-head">
+    <div class="slate"><b>V</b><span>Risks</span></div>
+    <h2>Ranked by expected damage</h2>
+  </div>
+
+  <div class="risks">
+    <div class="risk hi">
+      <div class="rk"><b>01</b><span>Highest stakes</span></div>
+      <h3>Arabic URL migration damages the Reels page</h3>
+      <p><strong>Mitigation:</strong> preserve AR at root (Option A); 1:1 redirect mapping; do not change that page's content, title or URL in the launch release; monitor it individually in GSC daily for two weeks.</p>
+    </div>
+    <div class="risk hi">
+      <div class="rk"><b>02</b><span>Most likely to actually bite</span></div>
+      <h3>Insufficient high-quality footage</h3>
+      <p>This entire direction — full-bleed frames, big video, editorial cadence — depends on having enough excellent assets. Eight nameable clients and five BTS films is a <em>thin</em> inventory for a grid built on 2.39:1 full-bleed rows. With only 12–15 genuinely premium pieces, a big-video grid looks <strong>emptier and weaker</strong> than the current small-thumbnail grid.</p>
+      <p><strong>Mitigation:</strong> asset audit is the first task in phase 0. If the count is low, <strong>reduce the number of rows and increase the size of each</strong> rather than padding, and lean harder on BTS and process content. Better eight pieces beautifully than twenty at three quality tiers.</p>
+    </div>
+    <div class="risk hi">
+      <div class="rk"><b>03</b><span>Content, not code</span></div>
+      <h3>The team roster undermines the studio positioning</h3>
+      <p>Three of six members share the surname Aqraa, and one is listed as an <em>e-commerce consultant and entrepreneur</em>. On a page whose explicit job is to prove "this is a production company, not one person with a camera", a non-production business role on the crew list works directly against the goal, and a visibly family-weighted roster reads as a small family business rather than a studio. This is an observation about the page, not a criticism of the people.</p>
+      <p><strong>Mitigation, in order of preference:</strong> (a) restructure the page around <strong>production departments</strong> — Direction, Cinematography, Food Styling, Post — with people listed under capabilities, so the roster reads as crew structure; (b) move the commercial role to a separate Leadership block; (c) credit regular freelance collaborators. <strong>This needs a client conversation and it matters more to the studio-vs-freelancer objective than any design decision in this document.</strong></p>
+    </div>
+    <div class="risk">
+      <div class="rk"><b>04</b><span>Cost</span></div>
+      <h3>Video bandwidth on Vercel</h3>
+      <p>Serving MP4 from <code>/public</code> at studio-site traffic produces a surprising invoice. <strong>Mitigation:</strong> Mux / Cloudflare Stream decision in phase 0.</p>
+    </div>
+    <div class="risk">
+      <div class="rk"><b>05</b><span>SEO</span></div>
+      <h3>Many-to-one redirects become soft 404s</h3>
+      <p><strong>Mitigation:</strong> pillar pages absorb the retired services' content as capability sections. Redirect map and pillar copy designed together.</p>
+    </div>
+    <div class="risk">
+      <div class="rk"><b>06</b><span>Expectation</span></div>
+      <h3>No CMS in v1</h3>
+      <p>The client will want to add work without a developer. <strong>Mitigation:</strong> be explicit that v1 is developer-updated, design <code>Project</code> as a clean interface, scope Sanity or Payload as phase 8. Do not let this quietly become an unmanaged expectation.</p>
+    </div>
+    <div class="risk">
+      <div class="rk"><b>07</b><span>Content</span></div>
+      <h3>Arabic copy quality</h3>
+      <p>Translated-sounding Arabic destroys premium positioning with the primary audience faster than any design flaw. <strong>Mitigation:</strong> budget an Arabic copywriter; Arabic is authored, not translated.</p>
+    </div>
+    <div class="risk">
+      <div class="rk"><b>08</b><span>Market</span></div>
+      <h3>Mobile data cost</h3>
+      <p><strong>Mitigation:</strong> one decoder maximum, <code>saveData</code> honoured, &lt;600 KB preview budget, posters-only on 2G.</p>
+    </div>
+    <div class="risk">
+      <div class="rk"><b>09</b><span>Budget</span></div>
+      <h3>Arabic font licensing</h3>
+      <p>Good Arabic type is expensive and web licences are often traffic-tiered. <strong>Mitigation:</strong> decide in phase 0; IBM Plex Sans Arabic is a credible zero-cost fallback that won't embarrass the design.</p>
+    </div>
+    <div class="risk">
+      <div class="rk"><b>10</b><span>Process</span></div>
+      <h3>Requests that erode the direction</h3>
+      <p>"Can we add a gradient here?" "Can the button be red?" "Can we add a testimonial slider?" <strong>Mitigation:</strong> the forbidden-uses list in K and the motion principles in M exist to be cited in review. Written constraints are easier to defend than taste.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ W ============ -->
+<section id="w">
+  <div class="sec-head">
+    <div class="slate"><b>W</b><span>Open questions</span></div>
+    <h2>What must be resolved before implementation</h2>
+  </div>
+
+  <h4>Blocking — cannot start without these</h4>
+  <div class="qs">
+    <div class="q"><div class="id">W1</div><p>Is Arabic served from the root today (<code>fraise.studio/</code> = AR, <code>/en/</code> = EN)? This determines the entire URL strategy. <em>Answerable in five minutes with GSC or by loading the root URL.</em></p></div>
+    <div class="q"><div class="id">W2</div><p><strong>Asset audit:</strong> exactly how many finished pieces exist at premium quality, by pillar? How many have BTS coverage? How many have client permission to publish? This determines whether the grid design is viable as specified.</p></div>
+    <div class="q"><div class="id">W3</div><p>GSC export (Pages, 16 months, both locales) plus a full crawl of the live site. Without these the redirect map is guesswork.</p></div>
+    <div class="q"><div class="id">W4</div><p>What are the <strong>nine</strong> current granular services, verbatim, with their URLs? The nine→five mapping can't be drafted without them.</p></div>
+  </div>
+
+  <h4>High priority — before phase 2</h4>
+  <div class="qs">
+    <div class="q"><div class="id">W5</div><p>Budget for video hosting (Mux / Cloudflare Stream) — or is static hosting mandated?</p></div>
+    <div class="q"><div class="id">W6</div><p>Budget for Arabic display type (~$300–800), or do we ship IBM Plex Sans Arabic?</p></div>
+    <div class="q"><div class="id">W7</div><p>Do source masters exist for re-encoding, or only web-compressed exports? Re-encoding an already-compressed file looks noticeably worse full-bleed.</p></div>
+    <div class="q"><div class="id">W8</div><p>Which clients may be <strong>named</strong> publicly, and which logos may be used? KFC in particular will have brand-usage terms.</p></div>
+  </div>
+
+  <h4>Before launch</h4>
+  <div class="qs">
+    <div class="q"><div class="id">W9</div><p>Who writes the Arabic copy? Is there budget for a native copywriter?</p></div>
+    <div class="q"><div class="id">W10</div><p>Do full films have caption tracks, or is captioning in scope? Real cost, WCAG requirement.</p></div>
+    <div class="q"><div class="id">W11</div><p>Is there professional photography of the <strong>crew on set</strong>? The studio-not-freelancer argument is carried more by one great on-set crew photograph than by any layout decision. If it doesn't exist, commission it.</p></div>
+    <div class="q"><div class="id">W12</div><p>Case studies — do written narratives exist, or is that a content deliverable?</p></div>
+    <div class="q"><div class="id">W13</div><p>Contact form destination: email, CRM, WhatsApp handoff? Given <code>+962 7 9372 4731</code> is already a primary channel, should the form offer a WhatsApp deep-link as the primary mobile action? <em>I'd recommend yes — it matches how business actually gets done in this market.</em></p></div>
+    <div class="q"><div class="id">W14</div><p>Confirm the studio's hard numbers for the credibility block: years active, productions delivered, brands served, awards.</p></div>
+  </div>
+
+  <h4>Design calls I need from you</h4>
+  <div class="qs">
+    <div class="q"><div class="id">W15</div><p>Client wall as <strong>type</strong> (recommended) or logos?</p></div>
+    <div class="q"><div class="id">W16</div><p>Hero: a cut showreel, or a single sustained hero shot? A sustained shot is more confident and more cinematic; a cut reel shows more range. <em>I lean sustained shot, with the cut reel in the lightbox.</em></p></div>
+    <div class="q"><div class="id">W17</div><p>Does an <code>#awards</code> section survive into the new IA, or merge into Studio?</p></div>
+  </div>
+</section>
+
+<!-- ============ X ============ -->
+<section id="x">
+  <div class="sec-head">
+    <div class="slate"><b>X</b><span>MVP scope</span></div>
+    <h2>Three routes, executed immaculately</h2>
+  </div>
+  <p>The goal of the design test is to prove the <strong>direction</strong>, not the site. Three routes done properly beat eight at 70%.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>#</th><th>Route</th><th>Why this one</th></tr></thead>
+    <tbody>
+      <tr><td>01</td><td><strong>Homepage</strong></td><td>Carries the direction — hero, positioning line, Selected Work in the editorial cadence, client wall, five pillars, studio teaser, CTA</td></tr>
+      <tr><td>02</td><td><strong>Work</strong></td><td>Proves the grid cadence, filter rail, load-more and hover model at density. The route that answers every complaint in the brief.</td></tr>
+      <tr><td>03</td><td><strong>Reels pillar</strong></td><td>Highest-value SEO page, most distinctive layout (the 9:16 wall), and it proves the pillar template</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>One <strong>project detail</strong> page only if time allows — it is the least risky to defer.</p>
+
+  <div class="note">
+    <h4>Build it in Arabic RTL as the primary demo</h4>
+    <p>The recommendation I'd defend hardest, and deliberately contrarian. Arabic is the <strong>strongest organic market</strong> — demo in the language of the audience that converts. It <strong>proves the hardest technical requirement</strong> on day one: anyone can demo an English studio site, but a well-set RTL cinematic site with correct Arabic typography, mirrored chrome and unmirrored media is a far stronger competence signal. And <strong>every competing pitch will demo in English.</strong> Ship both locales — present Arabic first.</p>
+  </div>
+
+  <h3>Must be real, not placeholder</h3>
+  <ul>
+    <li><strong>Real footage</strong> from the actual client roster. Lorem-ipsum video kills this direction outright — the design's whole thesis is that the work is the hero. If the work is stock, there is nothing to evaluate.</li>
+    <li><strong>Real client names.</strong></li>
+    <li><strong>Real hover behaviour</strong>, with the concurrency cap and intent delay working.</li>
+    <li><strong>Deployed to Vercel</strong> with a real Lighthouse score visible.</li>
+  </ul>
+  <p><strong>Explicitly out of scope:</strong> team, BTS, case studies, contact backend, CMS, the full redirect map, the other four pillars — noted as scoped-and-costed rather than silently omitted.</p>
+
+  <div class="note">
+    <h4>The bar to judge it against</h4>
+    <p>Open the deployed URL cold on a phone and ask: <strong>within three seconds and zero reading, is it obvious that this is a production company that shoots food?</strong> If the answer needs a caption, the direction has failed — and we change it at phase 3, not at launch.</p>
+  </div>
+</section>
+
+<!-- ============ review ============ -->
+<section id="review">
+  <div class="sec-head">
+    <div class="slate"><b>·</b><span>Critical review checkpoints</span></div>
+    <h2>Applied at the end of phases 3, 4 and 5</h2>
+  </div>
+  <p>Answered honestly, in writing. If any answer is weak, name it and change it. Do not defend it.</p>
+  <ol>
+    <li>Does this look like a premium production studio, or a portfolio template with good photos?</li>
+    <li>Would it survive next to <code>thegoldminefilms.com</code> on the same screen?</li>
+    <li>Is there any element whose only justification is "sites like this have one"?</li>
+    <li>Is the interface asserting colour it hasn't earned?</li>
+    <li>Is the largest typographic element competing with the work?</li>
+    <li>Is the whitespace scheduled, or sprinkled?</li>
+    <li>Are the videos actually big, or just bigger than before?</li>
+    <li>Is the project label legible at rest, on the brightest frame in the loop?</li>
+    <li>Does the Arabic version look designed, or translated?</li>
+    <li>Does the motion say cinema, or does it say website?</li>
+  </ol>
+</section>
+
+<footer>
+  <p>End of pre-development analysis</p>
+  <p>No implementation until explicitly approved</p>
+</footer>
+
+</main>
+</div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "omar-aqraa",
+    "name": {
+      "ar": "عمر أقرع",
+      "en": "Omar Aqraa"
+    },
+    "role": "Photographer",
+    "bio": {
+      "ar": "أكثر من 7 سنوات في التصوير، متخصص بالمنتجات الغذائية وقدّم أعمالاً لشركات إعلان عالمية في الأردن. مهاراته تتجاوز الكاميرا إلى الجانب التقني والتركيز في أدق التفاصيل.",
+      "en": "Seven years in food product photography, with work for international agencies operating in Jordan. The skill sits as much in the technical setup and the attention to detail as in the camera."
+    }
+  },
+  {
+    "id": "ahmad-aqraa",
+    "name": {
+      "ar": "أحمد أقرع",
+      "en": "Ahmad Aqraa"
+    },
+    "role": "Founder · Visual Creative Director",
+    "bio": {
+      "ar": "مصوّر منتجات غذائية بخبرة تزيد عن 12 عاماً. درس تصميم الجرافيك ثم صقل مهاراته مع شركات مختلفة حتى صار واحداً من أفضل مصوّري المنتجات الغذائية في الأردن، ومنها أسّس فريز ستوديو.",
+      "en": "Twelve years photographing food. Studied graphic design, then sharpened the craft across agencies until he was among the strongest food-product photographers in Jordan — and founded Fraise Studio out of it."
+    }
+  },
+  {
+    "id": "saleem-najjar",
+    "name": {
+      "ar": "سليم نجار",
+      "en": "Saleem Najjar"
+    },
+    "role": "Consultant · Entrepreneur",
+    "bio": {
+      "ar": "رائد أعمال ومستشار تجارة إلكترونية بخبرة تتجاوز 13 سنة. أسّس وشارك بتأسيس شركات ناشئة، وبنى شراكات مع Oasis500 والاتحاد الأوروبي والبنك الدولي وMercy Corps.",
+      "en": "Thirteen years in e-commerce, founding and co-founding startups and building partnerships with Oasis500, the EU, the World Bank and Mercy Corps."
+    }
+  },
+  {
+    "id": "ahmad-al-sbaihat",
+    "name": {
+      "ar": "أحمد الصبيحات",
+      "en": "Ahmad Al Sbaihat"
+    },
+    "role": "Director of Photography",
+    "bio": {
+      "ar": "أكثر من 6 سنوات اكتسبها من العمل والتدريب على يد عدد من المخرجين المعروفين. يؤمن أن كل قصة قادرة على جذب الأنظار، وأن مهمته إحياؤها بالصورة.",
+      "en": "Six years built working under established directors. He works from the position that every story can hold an audience, and that his job is to give it a picture."
+    }
+  },
+  {
+    "id": "mahmoud-aqraa",
+    "name": {
+      "ar": "محمود أقرع",
+      "en": "Mahmoud Aqraa"
+    },
+    "role": "Editor",
+    "bio": {
+      "ar": "بدأ تحرير الفيديو في سن السادسة عشرة، جرّب تقنيات مختلفة وصقل مهاراته، وشارك أعماله على يوتيوب حيث لقي تشجيعاً دفعه لاحتراف المونتاج.",
+      "en": "Started editing at sixteen, testing techniques and publishing the results, and the response is what turned it from a habit into a profession."
+    }
+  },
+  {
+    "id": "yaman-ajami",
+    "name": {
+      "ar": "يمان عجمي",
+      "en": "Yaman Ajami"
+    },
+    "role": "Editor",
+    "bio": {
+      "ar": "أكثر من 13 سنة في المونتاج، عمل خلالها على إنتاج وتحرير أعمال درامية ضخمة في الوطن العربي، بإلمام عميق بالتقنيات الحديثة.",
+      "en": "Thirteen years cutting, much of it on large Arabic drama productions — the kind of volume that leaves you fluent in every tool in the room."
+    }
+  }
+]

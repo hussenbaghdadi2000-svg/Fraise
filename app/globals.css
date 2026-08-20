@@ -1,26 +1,500 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================
+   FRAISE STUDIO — DESIGN TOKENS
+   Direction: "Black Room, Warm Plate"
+
+   The UI is achromatic. Every pixel of colour on the page comes
+   from the food. --color-fraise is reserved for interactive
+   state ONLY: focus ring, active filter, hover underline.
+   Never a background, never a button at rest.
+   ============================================================ */
+
+@theme {
+  /* --- colour ---------------------------------------------- */
+  --color-ink: #0b0b0c;
+  --color-ink-raised: #131315;
+  --color-bone: #f2efe9;
+  --color-bone-dim: #a8a49c;
+  --color-bone-faint: #6e6a64;
+  --color-hairline: rgba(242, 239, 233, 0.14);
+  --color-fraise: #c8402f;
+
+  /* --- aspect ratio IS the service taxonomy ---------------- */
+  --aspect-tvc: 2.39 / 1;
+  --aspect-recipe: 16 / 9;
+  --aspect-reel: 9 / 16;
+  --aspect-still: 4 / 5;
+  --aspect-menu: 1 / 1;
+
+  /* --- motion ----------------------------------------------- */
+  --ease-cine: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* --- RHYTHM ------------------------------------------------
+     The audit found TWENTY distinct vertical spacing values in use.
+     Every section's pacing had been chosen by eye in isolation, which
+     is why the page read as assembled rather than composed.
+
+     These five are the whole vocabulary now, and they are named for
+     what they do rather than how big they are — you pick a rhythm,
+     not a number. Tailwind v4 turns each into py-*, gap-*, pt-* and
+     the rest, so nothing needs a plugin.
+     ----------------------------------------------------------- */
+  --spacing-gutter: 1.5rem; /* page inset, mobile  */
+  --spacing-gutter-lg: 2.5rem; /* page inset, desktop */
+  --spacing-beat: 2.5rem; /* inside a block      */
+  --spacing-bar: 5rem; /* between blocks      */
+  --spacing-movement: 7.5rem; /* between sections    */
+  --spacing-rest: 11rem; /* a major pause       */
+
+  /* --- TYPE SCALE --------------------------------------------
+     Eleven sizes were doing about four jobs, and the same semantic
+     role — a section's opening statement — was text-5xl on one page
+     and text-6xl on another. That is drift, not art direction.
+
+     Five roles, and the three large ones are FLUID. clamp() removes
+     the sm:/lg: ladder entirely: type scales continuously from 320
+     to 1920 instead of jumping at two arbitrary widths, which is
+     also the honest reading of "mobile must be intentionally
+     composed, not a shrunk desktop".
+     ----------------------------------------------------------- */
+  --text-label: 0.6875rem; /* the mono voice — 58 uses were text-[11px] */
+  --text-label--line-height: 1.5;
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.6;
+  --text-body: 1rem;
+  --text-body--line-height: 1.7;
+  --text-lead: clamp(1.0625rem, 1rem + 0.28vw, 1.1875rem);
+  --text-lead--line-height: 1.6;
+  /* The step the ladder actually needed. Six roles, not five: every
+     sub-head on the site was written as text-xl→2xl or text-2xl→3xl,
+     and collapsing those into --text-title would have doubled them at
+     desktop. A scale that forces a visible regression is not a scale. */
+  --text-subtitle: calc(clamp(1.125rem, 1rem + 0.55vw, 1.5rem) * var(--optical, 1));
+  --text-subtitle--line-height: 1.3;
+  --text-title: calc(clamp(1.375rem, 1.125rem + 1.25vw, 2.125rem) * var(--optical, 1));
+  --text-title--line-height: 1.15;
+  --text-display: calc(clamp(1.875rem, 1.25rem + 2.8125vw, 3.5rem) * var(--optical, 1));
+  --text-display--line-height: 1.05;
+
+  /* --- MEASURE -----------------------------------------------
+     Seven ad-hoc ch values (16/18/20/22/46/52/62) become three.
+     Measured at 1920 and 1440: body lands at 62 characters, which
+     is inside the 45–75 the eye reads comfortably.
+     ----------------------------------------------------------- */
+  --container-display: 18ch;
+  --container-lead: 46ch;
+  --container-body: 62ch;
 }
 
+/* `inline` is required for next/font: the font variables are set as
+   a className on <html>, so the utility must resolve through the
+   cascade rather than being frozen at build time. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-arabic: var(--font-plex-arabic);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* --- base --------------------------------------------------- */
+
+body {
+  background: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* :lang(ar) matches every DESCENDANT of an element with lang="ar",
+   not just that element. font-family is safe to set here because it
+   does not accumulate. Anything relative (em, %) would compound on
+   every nesting level, so optical sizing is handled at the root
+   only, below. */
+:lang(ar) {
+  font-family: var(--font-arabic);
+}
+
+/* Arabic reads optically smaller than Latin at an identical size, and
+   needs roughly +0.15 line-height to clear its ascenders. One
+   root-level bump, applied exactly once, can never compound.
+   Anything that sets its own leading opts out. */
+html:lang(ar) {
+  font-size: 106.25%;
+  line-height: 1.65;
+}
+
+/* Latin-only treatment. Arabic has no letter case, and it is a
+   connected script — tracking would break the joins and read as a
+   rendering bug. Gated, not global.
+
+   The gate is `.u-caps:lang(ar)`, NOT `:lang(ar) .u-caps`. The second
+   form is a descendant selector: on an Arabic page EVERY .u-caps on
+   the page is a descendant of <html lang="ar">, so it would strip the
+   caps off Latin runs too — including the slate, which is Latin by
+   design in both locales. `.u-caps:lang(ar)` asks about the element's
+   OWN language, so marking a run lang="en" is enough to keep it. */
+.u-caps {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.u-caps:lang(ar) {
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* Display type. Latin is set tight and slightly negative-tracked;
+   Arabic gets neither — no tracking, and more leading, because 1.02
+   clips the tall letterforms. Pairing the two in one class is what
+   stops the Arabic case from being forgotten at the call site. */
+.u-display {
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+}
+
+.u-display:lang(ar) {
+  letter-spacing: normal;
+  line-height: 1.28;
+  /* Arabic runs VISUALLY LARGER than Latin at an identical font-size —
+     taller x-height equivalent, fuller counters, no descender-light
+     lowercase to lighten the line. At body sizes that reads as "too
+     small" and gets the +6.25% bump on html:lang(ar); at display sizes
+     the same bump compounds a script that was already bigger, and the
+     line starts shouting.
+
+     So the optical correction REVERSES with size. This cancels the root
+     bump (1 / 1.0625 = 0.941) and takes a further 9% off, which is what
+     matches the Latin cut by eye at 4rem and above. */
+}
+
+/* The optical correction, as a MULTIPLIER ON THE TOKEN rather than a
+   font-size declaration.
+ *
+ * It used to live above as `.u-display:lang(ar) { font-size: 0.86em }`.
+ * That selector is a class plus a pseudo-class — specificity (0,2,0) —
+ * and every Tailwind size utility is a bare class, (0,1,0). So the rule
+ * did not take 14% off the display size; it OUTRANKED it and replaced
+ * it with 86% of the inherited body size. Measured over CDP, every
+ * Arabic heading carrying `.u-display` resolved to 14.6px, including
+ * the homepage h1. It was invisible in review because the visible
+ * `text-*` class named the size the element was supposed to be, and
+ * because the one element that looked correct was `lang="en"`.
+ *
+ * Scaling the variable sidesteps the cascade entirely: the utility
+ * still owns `font-size`, and the language only changes its input.
+ * `--optical` is re-set on :lang(en) because custom properties inherit,
+ * so a Latin run nested inside the Arabic document would otherwise
+ * carry the Arabic correction. */
+:lang(ar) {
+  --optical: 0.86;
+}
+
+:lang(en) {
+  --optical: 1;
+}
+
+/* Crew portraits.
+ *
+ * These were grayscale at rest for one build, which unified six
+ * portraits shot against six unrelated backgrounds — a blue studio
+ * wall, a red seamless, autumn foliage, grey. The studio wants them in
+ * colour, so they are; the inconsistency between the source frames is
+ * now a RETOUCHING note rather than a CSS one, and it is worth raising
+ * with whoever owns the assets.
+ *
+ * The movement stays. It reaches into a child `img` on purpose:
+ * `Poster` takes no className and should not grow one for a treatment
+ * that belongs to this page rather than to the media system. */
+.u-portrait img {
+  transition: transform 900ms var(--ease-cine);
+}
+
+.u-portrait:hover img,
+.u-portrait:focus-within img,
+.u-portrait:active img {
+  transform: scale(1.05);
+}
+
+/* Progressive disclosure, in CSS, with the content still in the DOM.
+ *
+ * `grid-template-rows: 0fr -> 1fr` is the only way to animate an
+ * element to its own intrinsic height without measuring it in JS. The
+ * text is clipped by `overflow`, NOT by `display:none` or
+ * `visibility:hidden` — so a screen reader still reads it and a
+ * crawler still indexes it. Hiding it any other way would trade real
+ * content for a smaller card, which is not a trade worth making.
+ *
+ * ⚠️ The `hover: none` branch is the important half. A phone cannot
+ * hover, so on touch the bio is simply always open — otherwise the
+ * card would be permanently truncated for half the audience. */
+.u-reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 650ms var(--ease-cine);
+}
+
+.u-reveal > * {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.group:hover .u-reveal,
+.group:focus-within .u-reveal {
+  grid-template-rows: 1fr;
+}
+
+@media (hover: none) {
+  .u-reveal {
+    grid-template-rows: 1fr;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  .u-portrait:hover img,
+  .u-portrait:focus-within img,
+  .u-portrait:active img {
+    transform: none;
+  }
+}
+
+/* An auto-scrolling logo marquee. 0 kB — no library, no timer, no JS.
+ *
+ * The track holds the logo set TWICE and slides exactly -50%, so the
+ * moment the first copy leaves, the second is sitting in its place and
+ * the loop is seamless. That is the whole trick; everything else here
+ * is about not trapping anyone inside it.
+ *
+ * ⚠️ DIRECTION IS NOT DECORATIVE. `translateX` is physical, so a single
+ * keyframe would run the marquee the same way on an Arabic page as on
+ * an English one — against the reading direction on one of them. The
+ * `[dir="rtl"]` branch flips it. `dir` is server-rendered on <html>, so
+ * this is correct on the first paint with no flash.
+ *
+ * ⚠️ REDUCED MOTION CANNOT JUST STOP IT. Killing the animation would
+ * freeze half the logos outside a container with `overflow: hidden` —
+ * unreachable, permanently. So that branch also hands the container
+ * back its scrollbar, turning the marquee into the manual rail it used
+ * to be. Same content, no movement.
+ *
+ * Hover and focus pause it, so a mark can actually be looked at. */
+@keyframes u-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes u-marquee-rtl {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(50%);
+  }
+}
+
+.u-marquee-wrap {
+  overflow: hidden;
+  scrollbar-width: none;
+  overscroll-behavior-inline: contain;
+}
+
+.u-marquee-wrap::-webkit-scrollbar {
+  display: none;
+}
+
+.u-marquee {
+  width: max-content;
+  animation: u-marquee 44s linear infinite;
+}
+
+[dir="rtl"] .u-marquee {
+  animation-name: u-marquee-rtl;
+}
+
+.u-marquee-wrap:hover .u-marquee,
+.u-marquee-wrap:focus-within .u-marquee {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .u-marquee {
+    animation: none;
+  }
+
+  .u-marquee-wrap {
+    overflow-x: auto;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-fraise);
+  outline-offset: 3px;
+}
+
+/* CSS alone cannot stop <video autoplay> — that is handled in JS
+   when we build the media system. This covers transitions only. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   MOTION VOCABULARY
+
+   All of it is CSS. There is no animation library and no scroll
+   listener — `animation-timeline: view()` drives the reveal from the
+   element's own position in the viewport, on the compositor, for
+   0 kB of JavaScript. That matters here: the entire client budget is
+   4 kB and a scroll-reveal library would eat all of it.
+
+   Everything degrades to "already visible". The animation only ever
+   applies inside @supports, so a browser without scroll-driven
+   animations renders the finished state and loses nothing.
+   ============================================================ */
+
+@keyframes u-rise {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .u-rise {
+      animation: u-rise linear both;
+      animation-timeline: view();
+      /* Finishes well before the element reaches the middle of the
+         screen. A reveal still running when you are already reading
+         it reads as lag, not as craft. */
+      animation-range: entry 0% entry 55%;
+    }
+  }
+
+  /* Page entrance for the hero, which is above the fold and therefore
+     has no scroll range to animate against. */
+  .u-enter {
+    animation: u-rise 1000ms var(--ease-cine) both;
+  }
+  .u-enter-2 {
+    animation-delay: 120ms;
+  }
+  .u-enter-3 {
+    animation-delay: 240ms;
+  }
+}
+
+/* ============================================================
+   SCRIM
+
+   Not decoration — legibility. The design forbids gradients used as
+   ornament; this is the one the analysis explicitly calls for, so a
+   label can sit at 100% opacity over media of unknown brightness
+   ("visible at rest, over a scrim"). It carries no hue: it is the
+   ground colour fading to nothing.
+   ============================================================ */
+
+.u-scrim::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgb(11 11 12 / 0.88) 0%,
+    rgb(11 11 12 / 0.55) 18%,
+    rgb(11 11 12 / 0.12) 42%,
+    rgb(11 11 12 / 0) 62%
+  );
+  transition: opacity 400ms var(--ease-cine);
+}
+
+/* The header sits over media too, and the media is not always dark —
+   the studio shoots bright, high-key interiors. Without this the nav
+   is unreadable on exactly the frames they are proudest of. Hero only:
+   work cards carry nothing at their top edge. */
+.u-scrim-top::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 30%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgb(11 11 12 / 0.72) 0%,
+    rgb(11 11 12 / 0.3) 40%,
+    rgb(11 11 12 / 0) 100%
+  );
+}
+
+/* Directional glyphs mirror; media, logos and slates never do. */
+[dir="rtl"] .u-mirror {
+  transform: scaleX(-1);
+}
+
+/* The native disclosure marker is a triangle in every engine and a
+   bullet in Safari. The header menu supplies its own label, so both are
+   removed rather than styled. */
+summary {
+  list-style: none;
+}
+summary::-webkit-details-marker,
+summary::marker {
+  display: none;
+  content: "";
+}
+
+/* ============================================================
+   THE INVERTED BAND
+
+   The reference alternates cream and near-black down the page. That
+   is NOT a new palette — it is the SAME two colours with their roles
+   swapped: bone becomes the ground, ink becomes the type. The
+   direction said the interface is achromatic and all colour comes
+   from the food; inverting two neutrals does not break that, and the
+   rhythm gives long pages a pulse that an unbroken black cannot.
+
+   Everything inside inherits, so a section needs one class and its
+   hairlines, dim type and faint type all follow.
+   ============================================================ */
+
+.u-invert {
+  background: var(--color-bone);
+  color: var(--color-ink);
+}
+
+.u-invert .text-bone {
+  color: var(--color-ink);
+}
+.u-invert .text-bone-dim {
+  color: color-mix(in srgb, var(--color-ink) 66%, var(--color-bone));
+}
+.u-invert .text-bone-faint {
+  color: color-mix(in srgb, var(--color-ink) 42%, var(--color-bone));
+}
+.u-invert .bg-hairline,
+.u-invert .border-hairline {
+  border-color: color-mix(in srgb, var(--color-ink) 16%, transparent);
+}
+.u-invert .bg-hairline {
+  background: color-mix(in srgb, var(--color-ink) 16%, transparent);
+}
+
+/* The accent has to darken to survive on a light ground — the same
+   hue at the same lightness would fail contrast against bone. */
+.u-invert .text-fraise {
+  color: color-mix(in srgb, var(--color-fraise) 88%, black);
 }
