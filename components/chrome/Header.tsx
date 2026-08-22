@@ -110,14 +110,35 @@ export function Header({ locale, route, overlay = false }: HeaderProps) {
           : "relative border-b border-hairline"
       }`}
     >
+      {/* The studio's own mark, replacing the mono wordmark it used to
+          set in type.
+
+          ⚠️ WIDTH AND HEIGHT ARE ON THE TAG. The file is 520x234, and
+          without the intrinsic size declared the header collapses and
+          re-expands as the image decodes — a layout shift on the one
+          element that sits above every page on the site.
+
+          A plain <img>, not next/image: that component costs 4.3 kB
+          brotli for features this project does not use, and the budget
+          has 0.1 kB of headroom. See components/media/Poster.tsx. */}
       <Link
         href={routePath({ kind: "home" }, locale)}
-        lang="en"
-        dir="ltr"
-        /* nowrap: the wordmark is two words and must never break. */
-        className="u-caps shrink-0 font-mono text-label font-medium whitespace-nowrap text-bone"
+        aria-label="Fraise Studio"
+        className="shrink-0"
       >
-        Fraise Studio
+        {/* eslint-disable-next-line @next/next/no-img-element -- see above */}
+        <img
+          src="/logo-white.webp"
+          alt="Fraise Studio"
+          width={520}
+          height={234}
+          /* Eager and high priority: it is above the fold on every
+             route, and it is the brand. */
+          fetchPriority="high"
+          /* The mark carries a strawberry, an Arabic wordmark and a
+             Latin one — at 20px none of the three resolved. */
+          className="h-7 w-auto sm:h-8"
+        />
       </Link>
 
       {/* Desktop — everything inline. */}

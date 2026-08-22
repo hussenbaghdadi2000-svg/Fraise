@@ -45,3 +45,8 @@ next-env.d.ts
 
 # screenshots from .claude/skills/fraise-frontend/scripts/shot.mjs
 /shots/
+
+
+# Vercel CLI project link. Holds the project and org id — not secret,
+# but machine-specific, so it stays out of the repo.
+.vercel

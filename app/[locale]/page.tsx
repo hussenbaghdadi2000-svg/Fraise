@@ -328,8 +328,23 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
                           the width. shrink-0 matters — without it flex
                           would compress the wide frames toward the
                           narrow ones and erase the comparison. */}
-                      <div className="h-16 shrink-0 sm:col-span-4 sm:h-24 sm:justify-self-end">
-                        <div className={`h-full ${RATIO_CLASS[ratio]}`}>
+                      {/* ⚠️ THE AXIS SWAPS AT sm.
+                          
+                          Above sm the row is horizontal, so every frame
+                          shares a HEIGHT and the ratio decides the
+                          width — that difference side by side is the
+                          whole argument the section makes.
+                          
+                          Below sm the rows stack, and a shared height
+                          made the 9:16 a 36px sliver next to a 153px
+                          strip: nothing to compare against, just a
+                          ragged left edge down the page. Stacked, a
+                          shared WIDTH shows the same difference as
+                          height instead, and the column reads straight. */}
+                      <div className="w-28 shrink-0 sm:col-span-4 sm:h-24 sm:w-auto sm:justify-self-end">
+                        <div
+                          className={`w-full ${RATIO_CLASS[ratio]} sm:h-full sm:w-auto`}
+                        >
                           <Preview
                             src={`/media/${PILLAR_MEDIA[pillar]}.mp4`}
                             className="h-full w-full"

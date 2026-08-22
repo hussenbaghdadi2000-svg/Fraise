@@ -2151,6 +2151,56 @@ with the thing it describes.
 
 ---
 
+## 5.19 THE LOGO, AND THE MOBILE CAPABILITY ROWS (2026-08-19)
+
+### The header carries the studio's mark
+
+`logo-white.webp` (520x234) replaced the mono wordmark. It was sitting
+in the repo ROOT, where nothing serves it — copied to `public/`.
+
+⚠️ `width` and `height` are on the tag. Without the intrinsic size
+declared the header collapses and re-expands as the image decodes — a
+layout shift on the one element above every page on the site. A plain
+`<img>`, not `next/image`: that costs 4.3 kB brotli and the budget has
+0.1 kB of headroom.
+
+First pass set it at `h-5` (20px), matching the 11.7px wordmark it
+replaced. Wrong: the mark carries a strawberry, an Arabic wordmark and
+a Latin one, and at 20px none of the three resolved. `h-7 sm:h-8`.
+
+### ⚠️ THE CAPABILITY FRAMES SWAP AXIS AT `sm`
+
+Above `sm` the row is horizontal, so every frame shares a HEIGHT and the
+ratio decides the width — that comparison, side by side, is the entire
+argument the section makes.
+
+Below `sm` the rows stack, and a shared height made the 9:16 frame a
+**36px sliver** beside a 153px strip: nothing to compare it against,
+just a ragged edge down the page. Stacked, a shared WIDTH (`w-28`) shows
+the same difference through height instead, and the column reads
+straight.
+
+The rule generalises: **a shared dimension only communicates along the
+axis the items are laid out on.** Rotate the layout and the shared
+dimension has to rotate with it.
+
+Verified: build clean (89 pages), tsc and lint clean, budget unchanged
+at 119.9 kB, no horizontal overflow across every sitemap route at 320,
+390, 768, 1440 and 2560, no squeezed text.
+
+### ⚠️ A TEST ROW IS LIVE IN THE AWARDS LIST
+
+`content/data/awards.json` carries a fourth entry —
+`{"id": "www", "name": "hussaen"}` — and it renders on the homepage and
+`/about-us/` beside Cannes Silver Lion, Dubai Lynx and Gourmand Award.
+It is on the block of the site that makes credibility claims. Left in
+place rather than deleted, because the content now lives in Postgres and
+the JSON is the seed: removing it here alone would not remove it from a
+deployed database. Delete it in `/studio/`, or from the JSON followed by
+`npm run db:seed`.
+
+---
+
 ## 6. ROADMAP
 
 | Step | Scope | Status |
